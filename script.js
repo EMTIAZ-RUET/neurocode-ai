@@ -15,6 +15,11 @@ class NeuroCodeAgent {
         this.recommendations = [];
         this.chatHistory = [];
         this.analysisData = {};
+        this.codeAnalyzer = new CodeAnalyzer();
+        this.githubIntegration = new GitHubIntegration();
+        this.uploadedFiles = [];
+        this.currentLanguage = 'javascript';
+        this.realTimeAnalysisInterval = null;
         this.settings = {
             agentMode: 'reactive',
             interventionLevel: 7,
@@ -87,6 +92,64 @@ class NeuroCodeAgent {
         document.querySelector('.nav-toggle')?.addEventListener('click', () => {
             document.querySelector('.nav-menu').classList.toggle('active');
         });
+
+        // Code Analysis controls
+        document.querySelectorAll('.analysis-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.analysis-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.switchAnalysisMode(e.target.dataset.mode);
+            });
+        });
+
+        // Editor tab controls
+        document.querySelectorAll('.editor-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                this.switchLanguage(e.target.dataset.lang);
+            });
+        });
+
+        // Code editor real-time analysis
+        const codeEditor = document.getElementById('code-editor');
+        if (codeEditor) {
+            codeEditor.addEventListener('input', (e) => {
+                this.onCodeChange(e.target.value);
+            });
+            
+            codeEditor.addEventListener('keydown', (e) => {
+                this.trackKeystroke(e);
+            });
+        }
+
+        // File upload handling
+        const fileInput = document.getElementById('file-input');
+        const uploadArea = document.getElementById('upload-area');
+        
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                this.handleFileUpload(e.target.files);
+            });
+        }
+        
+        if (uploadArea) {
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                this.handleFileUpload(e.dataTransfer.files);
+            });
+        }
     }
 
     navigateToSection(sectionId) {
@@ -102,16 +165,22 @@ class NeuroCodeAgent {
     }
 
     initializeCharts() {
-        this.initStateMeter();
-        this.initActivityChart();
-        this.initSentimentChart();
-        this.initProfileRadar();
-        this.initProductivityChart();
+        // Wait for DOM to be ready
+        setTimeout(() => {
+            this.initStateMeter();
+            this.initActivityChart();
+            this.initSentimentChart();
+            this.initProfileRadar();
+            this.initProductivityChart();
+        }, 100);
     }
 
     initStateMeter() {
         const canvas = document.getElementById('stateMeter');
-        if (!canvas) return;
+        if (!canvas) {
+            console.warn('State meter canvas not found');
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
         const centerX = canvas.width / 2;
@@ -129,7 +198,7 @@ class NeuroCodeAgent {
         ctx.stroke();
 
         // Draw progress arc based on overall wellness score
-        const overallScore = (100 - this.currentState.stress + this.currentState.flow) / 2;
+        const overallScore = Math.max(0, Math.min(100, (100 - this.currentState.stress + this.currentState.flow) / 2));
         const startAngle = -Math.PI / 2;
         const endAngle = startAngle + (2 * Math.PI * overallScore / 100);
 
@@ -158,30 +227,19 @@ class NeuroCodeAgent {
 
     initActivityChart() {
         const canvas = document.getElementById('activityChart');
-        if (!canvas) return;
+        if (!canvas) {
+            console.warn('Activity chart canvas not found');
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
         
-        // Generate sample data for the last 24 hours
-        const hours = [];
-        const stressData = [];
-        const flowData = [];
-        const productivityData = [];
-
-        for (let i = 23; i >= 0; i--) {
-            const hour = new Date();
-            hour.setHours(hour.getHours() - i);
-            hours.push(hour.getHours() + ':00');
-            
-            // Simulate realistic patterns
-            const baseStress = 30 + Math.sin((hour.getHours() - 9) * Math.PI / 8) * 20;
-            const baseFlow = 60 + Math.cos((hour.getHours() - 10) * Math.PI / 6) * 25;
-            const baseProductivity = 50 + Math.sin((hour.getHours() - 9) * Math.PI / 7) * 30;
-            
-            stressData.push(Math.max(0, Math.min(100, baseStress + (Math.random() - 0.5) * 20)));
-            flowData.push(Math.max(0, Math.min(100, baseFlow + (Math.random() - 0.5) * 15)));
-            productivityData.push(Math.max(0, Math.min(100, baseProductivity + (Math.random() - 0.5) * 25)));
-        }
+        // Use demo data generator for realistic timeline data
+        const timelineData = this.demoData.generateActivityTimeline(24);
+        const hours = timelineData.map(d => new Date(d.time).getHours() + ':00');
+        const stressData = timelineData.map(d => d.stress);
+        const flowData = timelineData.map(d => d.flow);
+        const productivityData = timelineData.map(d => d.productivity);
 
         this.drawLineChart(ctx, canvas, {
             labels: hours,
@@ -283,13 +341,22 @@ class NeuroCodeAgent {
 
     initSentimentChart() {
         const canvas = document.getElementById('sentimentChart');
-        if (!canvas) return;
+        if (!canvas) {
+            console.warn('Sentiment chart canvas not found');
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
+        
+        // Use demo data generator for realistic sentiment data
+        const sentimentData = this.demoData.generateCommitSentiment();
+        const distribution = sentimentData.distribution;
+        const total = distribution.positive + distribution.neutral + distribution.negative;
+        
         const data = [
-            { label: 'Positive', value: 65, color: '#28a745' },
-            { label: 'Neutral', value: 25, color: '#ffc107' },
-            { label: 'Negative', value: 10, color: '#dc3545' }
+            { label: 'Positive', value: Math.round((distribution.positive / total) * 100), color: '#28a745' },
+            { label: 'Neutral', value: Math.round((distribution.neutral / total) * 100), color: '#ffc107' },
+            { label: 'Negative', value: Math.round((distribution.negative / total) * 100), color: '#dc3545' }
         ];
 
         this.drawPieChart(ctx, canvas, data);
@@ -854,3 +921,809 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+// 
+Code Analysis Functionality
+class CodeAnalyzer {
+    constructor() {
+        this.currentCode = '';
+        this.analysisMetrics = {
+            cognitive: 45,
+            stress: 32,
+            flow: 78,
+            quality: 85
+        };
+        this.keystrokePattern = [];
+        this.lastAnalysisTime = Date.now();
+    }
+
+    analyzeCode(code, language = 'javascript') {
+        this.currentCode = code;
+        
+        // Calculate complexity metrics
+        const complexity = this.calculateComplexity(code, language);
+        const quality = this.calculateQuality(code, language);
+        const patterns = this.analyzePatterns(code);
+        
+        // Update psychological metrics based on code analysis
+        this.updatePsychologicalMetrics(complexity, quality, patterns);
+        
+        return {
+            complexity,
+            quality,
+            patterns,
+            insights: this.generateInsights(code, language),
+            suggestions: this.generateSuggestions(code, language)
+        };
+    }
+
+    calculateComplexity(code, language) {
+        const lines = code.split('\n').filter(line => line.trim());
+        const cyclomaticComplexity = this.calculateCyclomaticComplexity(code);
+        const nestingDepth = this.calculateNestingDepth(code);
+        
+        return {
+            lines: lines.length,
+            cyclomatic: cyclomaticComplexity,
+            nesting: nestingDepth,
+            score: Math.min(100, Math.max(0, 100 - (cyclomaticComplexity * 5 + nestingDepth * 10)))
+        };
+    }
+
+    calculateCyclomaticComplexity(code) {
+        // Count decision points
+        const patterns = [
+            /if\s*\(/g, /else\s+if\s*\(/g, /while\s*\(/g, /for\s*\(/g,
+            /switch\s*\(/g, /case\s+/g, /catch\s*\(/g, /\?\s*:/g,
+            /&&/g, /\|\|/g
+        ];
+        
+        let complexity = 1; // Base complexity
+        patterns.forEach(pattern => {
+            const matches = code.match(pattern);
+            if (matches) complexity += matches.length;
+        });
+        
+        return Math.min(20, complexity);
+    }
+
+    calculateNestingDepth(code) {
+        let maxDepth = 0;
+        let currentDepth = 0;
+        
+        for (let char of code) {
+            if (char === '{') {
+                currentDepth++;
+                maxDepth = Math.max(maxDepth, currentDepth);
+            } else if (char === '}') {
+                currentDepth--;
+            }
+        }
+        
+        return Math.min(10, maxDepth);
+    }
+
+    calculateQuality(code, language) {
+        const lines = code.split('\n');
+        let score = 100;
+        
+        // Check for common quality indicators
+        const hasComments = lines.some(line => line.trim().startsWith('//') || line.includes('/*'));
+        const hasProperNaming = /[a-z][A-Z]/.test(code); // camelCase
+        const hasErrorHandling = /try\s*{|catch\s*\(/.test(code);
+        const hasConstants = /const\s+[A-Z_]+/.test(code);
+        
+        if (!hasComments) score -= 15;
+        if (!hasProperNaming) score -= 10;
+        if (!hasErrorHandling && code.length > 200) score -= 20;
+        if (!hasConstants && code.length > 100) score -= 5;
+        
+        // Check for code smells
+        const longLines = lines.filter(line => line.length > 120).length;
+        const emptyLines = lines.filter(line => !line.trim()).length;
+        const duplicatePatterns = this.findDuplicatePatterns(code);
+        
+        score -= longLines * 2;
+        score -= Math.max(0, emptyLines - lines.length * 0.1) * 1;
+        score -= duplicatePatterns * 5;
+        
+        return Math.max(0, Math.min(100, score));
+    }
+
+    findDuplicatePatterns(code) {
+        // Simple duplicate detection
+        const lines = code.split('\n').map(line => line.trim()).filter(line => line);
+        const lineCount = {};
+        
+        lines.forEach(line => {
+            if (line.length > 10) { // Only check substantial lines
+                lineCount[line] = (lineCount[line] || 0) + 1;
+            }
+        });
+        
+        return Object.values(lineCount).filter(count => count > 1).length;
+    }
+
+    analyzePatterns(code) {
+        const patterns = {
+            functions: (code.match(/function\s+\w+|=>\s*{|\w+\s*\(/g) || []).length,
+            variables: (code.match(/(?:let|const|var)\s+\w+/g) || []).length,
+            loops: (code.match(/for\s*\(|while\s*\(|forEach\s*\(/g) || []).length,
+            conditionals: (code.match(/if\s*\(|switch\s*\(/g) || []).length,
+            classes: (code.match(/class\s+\w+/g) || []).length
+        };
+        
+        return patterns;
+    }
+
+    updatePsychologicalMetrics(complexity, quality, patterns) {
+        // Update cognitive load based on complexity
+        this.analysisMetrics.cognitive = Math.min(100, 30 + complexity.cyclomatic * 3 + complexity.nesting * 5);
+        
+        // Update stress based on quality and complexity
+        const stressFactor = (100 - quality.score) * 0.5 + complexity.cyclomatic * 2;
+        this.analysisMetrics.stress = Math.min(100, Math.max(0, stressFactor));
+        
+        // Update flow state (inverse of stress and complexity)
+        this.analysisMetrics.flow = Math.max(0, 100 - this.analysisMetrics.stress * 0.7 - this.analysisMetrics.cognitive * 0.3);
+        
+        // Update quality metric
+        this.analysisMetrics.quality = quality;
+    }
+
+    generateInsights(code, language) {
+        const insights = [];
+        const lines = code.split('\n');
+        
+        // Positive insights
+        if (code.includes('//') || code.includes('/*')) {
+            insights.push({
+                type: 'positive',
+                message: 'Good documentation practices detected'
+            });
+        }
+        
+        if (/function\s+\w+/.test(code)) {
+            insights.push({
+                type: 'positive',
+                message: 'Well-structured function definitions'
+            });
+        }
+        
+        // Neutral insights
+        if (lines.length > 50) {
+            insights.push({
+                type: 'neutral',
+                message: 'Consider breaking down into smaller modules'
+            });
+        }
+        
+        if (!code.includes('try') && code.length > 200) {
+            insights.push({
+                type: 'neutral',
+                message: 'Consider adding error handling'
+            });
+        }
+        
+        // Negative insights
+        if (this.analysisMetrics.cognitive > 70) {
+            insights.push({
+                type: 'negative',
+                message: 'High cognitive complexity detected'
+            });
+        }
+        
+        return insights;
+    }
+
+    generateSuggestions(code, language) {
+        const suggestions = [];
+        
+        if (this.analysisMetrics.stress > 60) {
+            suggestions.push('Take a short break to reduce stress levels');
+        }
+        
+        if (this.analysisMetrics.cognitive > 80) {
+            suggestions.push('Consider simplifying the current logic');
+        }
+        
+        if (this.analysisMetrics.flow > 80) {
+            suggestions.push('Great flow state! Keep up the momentum');
+        }
+        
+        if (code.length > 0 && !code.includes('//')) {
+            suggestions.push('Add comments to improve code readability');
+        }
+        
+        return suggestions;
+    }
+
+    trackKeystroke(event) {
+        const now = Date.now();
+        this.keystrokePattern.push({
+            key: event.key,
+            timestamp: now,
+            interval: now - this.lastAnalysisTime
+        });
+        
+        // Keep only last 100 keystrokes
+        if (this.keystrokePattern.length > 100) {
+            this.keystrokePattern.shift();
+        }
+        
+        this.lastAnalysisTime = now;
+        
+        // Analyze typing patterns for stress indicators
+        this.analyzeTypingPatterns();
+    }
+
+    analyzeTypingPatterns() {
+        if (this.keystrokePattern.length < 10) return;
+        
+        const recent = this.keystrokePattern.slice(-10);
+        const avgInterval = recent.reduce((sum, stroke) => sum + stroke.interval, 0) / recent.length;
+        const variance = recent.reduce((sum, stroke) => sum + Math.pow(stroke.interval - avgInterval, 2), 0) / recent.length;
+        
+        // High variance indicates stress/frustration
+        if (variance > 10000) {
+            this.analysisMetrics.stress = Math.min(100, this.analysisMetrics.stress + 2);
+        } else if (variance < 2000) {
+            // Consistent typing indicates flow state
+            this.analysisMetrics.flow = Math.min(100, this.analysisMetrics.flow + 1);
+        }
+    }
+}
+
+// GitHub Integration Class
+class GitHubIntegration {
+    constructor() {
+        this.isConnected = false;
+        this.accessToken = null;
+        this.repositories = [];
+        this.selectedRepo = null;
+    }
+
+    async connect() {
+        // Simulate GitHub OAuth flow
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                this.isConnected = true;
+                this.accessToken = 'demo_token_' + Date.now();
+                this.loadDemoRepositories();
+                resolve(true);
+            }, 2000);
+        });
+    }
+
+    loadDemoRepositories() {
+        this.repositories = [
+            {
+                name: 'neurocode-frontend',
+                description: 'React-based frontend for NeuroCode platform',
+                language: 'JavaScript',
+                stars: 42,
+                commits: 156,
+                lastCommit: '2 hours ago'
+            },
+            {
+                name: 'ai-analysis-engine',
+                description: 'Machine learning models for code psychology analysis',
+                language: 'Python',
+                stars: 28,
+                commits: 89,
+                lastCommit: '1 day ago'
+            },
+            {
+                name: 'developer-wellness-api',
+                description: 'REST API for developer wellness tracking',
+                language: 'Node.js',
+                stars: 15,
+                commits: 67,
+                lastCommit: '3 days ago'
+            },
+            {
+                name: 'mobile-companion',
+                description: 'Mobile app for wellness notifications',
+                language: 'React Native',
+                stars: 8,
+                commits: 34,
+                lastCommit: '1 week ago'
+            }
+        ];
+    }
+
+    async analyzeRepository(repoName) {
+        const repo = this.repositories.find(r => r.name === repoName);
+        if (!repo) return null;
+
+        // Simulate repository analysis
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({
+                    commitPatterns: this.generateCommitPatterns(),
+                    qualityTrends: this.generateQualityTrends(),
+                    psychologicalIndicators: this.generatePsychIndicators()
+                });
+            }, 3000);
+        });
+    }
+
+    generateCommitPatterns() {
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        return days.map(day => ({
+            day,
+            commits: Math.floor(Math.random() * 20) + 5,
+            stress: Math.floor(Math.random() * 40) + 20,
+            productivity: Math.floor(Math.random() * 60) + 40
+        }));
+    }
+
+    generateQualityTrends() {
+        const weeks = [];
+        for (let i = 8; i >= 0; i--) {
+            weeks.push({
+                week: `Week ${9 - i}`,
+                quality: Math.floor(Math.random() * 30) + 70,
+                complexity: Math.floor(Math.random() * 20) + 10,
+                coverage: Math.floor(Math.random() * 25) + 75
+            });
+        }
+        return weeks;
+    }
+
+    generatePsychIndicators() {
+        return {
+            stressPatterns: Math.floor(Math.random() * 40) + 20,
+            productivityCycles: Math.floor(Math.random() * 30) + 70,
+            collaborationHealth: Math.floor(Math.random() * 25) + 75,
+            burnoutRisk: Math.floor(Math.random() * 30) + 10
+        };
+    }
+}
+
+// Extended NeuroCodeAgent methods for code analysis
+NeuroCodeAgent.prototype.switchAnalysisMode = function(mode) {
+    // Hide all analysis modes
+    document.querySelectorAll('.analysis-mode').forEach(mode => {
+        mode.classList.remove('active');
+    });
+    
+    // Show selected mode
+    const targetMode = document.getElementById(mode + '-mode');
+    if (targetMode) {
+        targetMode.classList.add('active');
+    }
+    
+    console.log(`Switched to ${mode} analysis mode`);
+};
+
+NeuroCodeAgent.prototype.switchLanguage = function(language) {
+    this.currentLanguage = language;
+    
+    // Update editor placeholder and file name
+    const editor = document.getElementById('code-editor');
+    const fileName = document.querySelector('.file-name');
+    
+    if (editor && fileName) {
+        const extensions = {
+            javascript: 'js',
+            python: 'py',
+            java: 'java',
+            cpp: 'cpp'
+        };
+        
+        fileName.textContent = `main.${extensions[language] || 'txt'}`;
+        
+        const placeholders = {
+            javascript: '// JavaScript code here...\nfunction example() {\n    console.log("Hello, NeuroCode!");\n}',
+            python: '# Python code here...\ndef example():\n    print("Hello, NeuroCode!")',
+            java: '// Java code here...\npublic class Example {\n    public static void main(String[] args) {\n        System.out.println("Hello, NeuroCode!");\n    }\n}',
+            cpp: '// C++ code here...\n#include <iostream>\nint main() {\n    std::cout << "Hello, NeuroCode!" << std::endl;\n    return 0;\n}'
+        };
+        
+        if (!editor.value.trim()) {
+            editor.placeholder = placeholders[language] || '// Code here...';
+        }
+    }
+    
+    console.log(`Switched to ${language} language`);
+};
+
+NeuroCodeAgent.prototype.onCodeChange = function(code) {
+    if (!this.codeAnalyzer) {
+        this.codeAnalyzer = new CodeAnalyzer();
+    }
+    
+    // Update editor stats
+    this.updateEditorStats(code);
+    
+    // Perform real-time analysis
+    const analysis = this.codeAnalyzer.analyzeCode(code, this.currentLanguage);
+    
+    // Update real-time metrics
+    this.updateRealTimeMetrics(this.codeAnalyzer.analysisMetrics);
+    
+    // Update insights and suggestions
+    this.updateCodeInsights(analysis.insights);
+    this.updateAISuggestions(analysis.suggestions);
+};
+
+NeuroCodeAgent.prototype.updateEditorStats = function(code) {
+    const lines = code.split('\n').length;
+    const chars = code.length;
+    const complexity = this.calculateComplexityLevel(code);
+    
+    const lineCount = document.getElementById('line-count');
+    const charCount = document.getElementById('char-count');
+    const complexityIndicator = document.getElementById('complexity-indicator');
+    
+    if (lineCount) lineCount.textContent = `Lines: ${lines}`;
+    if (charCount) charCount.textContent = `Characters: ${chars}`;
+    if (complexityIndicator) {
+        complexityIndicator.textContent = `Complexity: ${complexity}`;
+        complexityIndicator.className = `complexity-${complexity.toLowerCase()}`;
+    }
+};
+
+NeuroCodeAgent.prototype.calculateComplexityLevel = function(code) {
+    const cyclomaticComplexity = (code.match(/if|while|for|switch|catch|\?|&&|\|\|/g) || []).length;
+    
+    if (cyclomaticComplexity <= 5) return 'Low';
+    if (cyclomaticComplexity <= 10) return 'Medium';
+    return 'High';
+};
+
+NeuroCodeAgent.prototype.updateRealTimeMetrics = function(metrics) {
+    const metricElements = {
+        'rt-cognitive': metrics.cognitive,
+        'rt-stress': metrics.stress,
+        'rt-flow': metrics.flow,
+        'rt-quality': metrics.quality
+    };
+    
+    Object.entries(metricElements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        const bar = element?.parentElement.querySelector('.metric-fill');
+        
+        if (element && bar) {
+            element.textContent = Math.round(value) + '%';
+            bar.style.width = value + '%';
+        }
+    });
+};
+
+NeuroCodeAgent.prototype.updateCodeInsights = function(insights) {
+    const container = document.getElementById('code-insights-list');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    insights.forEach(insight => {
+        const element = document.createElement('div');
+        element.className = `insight-item ${insight.type}`;
+        element.innerHTML = `
+            <i class="fas fa-${insight.type === 'positive' ? 'check-circle' : 
+                                insight.type === 'negative' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            <span>${insight.message}</span>
+        `;
+        container.appendChild(element);
+    });
+};
+
+NeuroCodeAgent.prototype.updateAISuggestions = function(suggestions) {
+    const container = document.getElementById('ai-suggestions-list');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    suggestions.forEach(suggestion => {
+        const element = document.createElement('div');
+        element.className = 'suggestion-item';
+        element.innerHTML = `
+            <i class="fas fa-lightbulb"></i>
+            <span>${suggestion}</span>
+        `;
+        container.appendChild(element);
+    });
+};
+
+NeuroCodeAgent.prototype.trackKeystroke = function(event) {
+    if (!this.codeAnalyzer) {
+        this.codeAnalyzer = new CodeAnalyzer();
+    }
+    
+    this.codeAnalyzer.trackKeystroke(event);
+};
+
+NeuroCodeAgent.prototype.handleFileUpload = function(files) {
+    Array.from(files).forEach(file => {
+        if (this.isValidCodeFile(file)) {
+            this.processUploadedFile(file);
+        }
+    });
+};
+
+NeuroCodeAgent.prototype.isValidCodeFile = function(file) {
+    const validExtensions = ['.js', '.py', '.java', '.cpp', '.c', '.ts', '.jsx', '.vue', '.php', '.rb', '.go', '.rs', '.swift'];
+    return validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+};
+
+NeuroCodeAgent.prototype.processUploadedFile = function(file) {
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+        const content = e.target.result;
+        const analysis = this.analyzeUploadedFile(file, content);
+        this.addFileToList(file, analysis);
+        this.updateBatchAnalysis();
+    };
+    
+    reader.readAsText(file);
+};
+
+NeuroCodeAgent.prototype.analyzeUploadedFile = function(file, content) {
+    if (!this.codeAnalyzer) {
+        this.codeAnalyzer = new CodeAnalyzer();
+    }
+    
+    const language = this.detectLanguage(file.name);
+    return this.codeAnalyzer.analyzeCode(content, language);
+};
+
+NeuroCodeAgent.prototype.detectLanguage = function(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    const languageMap = {
+        'js': 'javascript',
+        'ts': 'typescript',
+        'py': 'python',
+        'java': 'java',
+        'cpp': 'cpp',
+        'c': 'c'
+    };
+    
+    return languageMap[ext] || 'text';
+};
+
+NeuroCodeAgent.prototype.addFileToList = function(file, analysis) {
+    const container = document.getElementById('files-list');
+    if (!container) return;
+    
+    const fileElement = document.createElement('div');
+    fileElement.className = 'file-item';
+    fileElement.innerHTML = `
+        <div class="file-info">
+            <div class="file-icon">
+                <i class="fas fa-file-code"></i>
+            </div>
+            <div class="file-details">
+                <div class="file-name">${file.name}</div>
+                <div class="file-size">${this.formatFileSize(file.size)} • Quality: ${Math.round(analysis.quality)}%</div>
+            </div>
+        </div>
+        <div class="file-actions">
+            <button class="btn-small btn-analyze" onclick="neuroCode.analyzeFile('${file.name}')">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="btn-small btn-remove" onclick="neuroCode.removeFile('${file.name}')">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    
+    container.appendChild(fileElement);
+    
+    // Store file data
+    if (!this.uploadedFiles) this.uploadedFiles = [];
+    this.uploadedFiles.push({
+        file,
+        analysis,
+        element: fileElement
+    });
+};
+
+NeuroCodeAgent.prototype.formatFileSize = function(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+NeuroCodeAgent.prototype.updateBatchAnalysis = function() {
+    if (!this.uploadedFiles || this.uploadedFiles.length === 0) return;
+    
+    const totalFiles = this.uploadedFiles.length;
+    const totalLines = this.uploadedFiles.reduce((sum, item) => sum + item.analysis.complexity.lines, 0);
+    const avgComplexity = this.uploadedFiles.reduce((sum, item) => sum + item.analysis.complexity.cyclomatic, 0) / totalFiles;
+    const avgQuality = this.uploadedFiles.reduce((sum, item) => sum + item.analysis.quality, 0) / totalFiles;
+    
+    // Update batch metrics
+    const elements = {
+        'total-files': totalFiles,
+        'total-lines': totalLines,
+        'avg-complexity': avgComplexity.toFixed(1),
+        'batch-quality': Math.round(avgQuality) + '%'
+    };
+    
+    Object.entries(elements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+    });
+    
+    // Update batch analysis chart
+    this.updateFileAnalysisChart();
+};
+
+NeuroCodeAgent.prototype.updateFileAnalysisChart = function() {
+    const canvas = document.getElementById('fileAnalysisChart');
+    if (!canvas || !this.uploadedFiles) return;
+    
+    const ctx = canvas.getContext('2d');
+    const data = {
+        labels: this.uploadedFiles.map(item => item.file.name.split('.')[0]),
+        datasets: [{
+            label: 'Quality Score',
+            data: this.uploadedFiles.map(item => item.analysis.quality),
+            color: '#667eea'
+        }]
+    };
+    
+    this.drawBarChart(ctx, canvas, data);
+};
+
+// Global functions for code analysis
+function clearEditor() {
+    const editor = document.getElementById('code-editor');
+    if (editor) {
+        editor.value = '';
+        neuroCode.onCodeChange('');
+    }
+}
+
+function analyzeCode() {
+    const editor = document.getElementById('code-editor');
+    if (editor && editor.value.trim()) {
+        console.log('Analyzing code...');
+        neuroCode.onCodeChange(editor.value);
+        
+        // Show analysis complete notification
+        setTimeout(() => {
+            neuroCode.showAnalysisComplete();
+        }, 1500);
+    }
+}
+
+function connectGitHub() {
+    if (!neuroCode.githubIntegration) {
+        neuroCode.githubIntegration = new GitHubIntegration();
+    }
+    
+    const authStatus = document.getElementById('github-auth-status');
+    const reposSection = document.getElementById('github-repos');
+    
+    if (authStatus) {
+        authStatus.innerHTML = '<span class="status-indicator"></span><span>Connecting...</span>';
+    }
+    
+    neuroCode.githubIntegration.connect().then(() => {
+        if (authStatus) {
+            authStatus.innerHTML = '<span class="status-indicator connected"></span><span>Connected</span>';
+        }
+        
+        if (reposSection) {
+            reposSection.style.display = 'block';
+            loadRepositories();
+        }
+    });
+}
+
+function loadRepositories() {
+    const reposList = document.getElementById('repos-list');
+    if (!reposList || !neuroCode.githubIntegration) return;
+    
+    reposList.innerHTML = '';
+    
+    neuroCode.githubIntegration.repositories.forEach(repo => {
+        const repoElement = document.createElement('div');
+        repoElement.className = 'repo-item';
+        repoElement.onclick = () => selectRepository(repo.name);
+        repoElement.innerHTML = `
+            <div class="repo-info">
+                <div class="repo-name">${repo.name}</div>
+                <div class="repo-description">${repo.description}</div>
+            </div>
+            <div class="repo-stats">
+                <span><i class="fas fa-star"></i> ${repo.stars}</span>
+                <span><i class="fas fa-code-branch"></i> ${repo.commits}</span>
+                <span><i class="fas fa-clock"></i> ${repo.lastCommit}</span>
+            </div>
+        `;
+        reposList.appendChild(repoElement);
+    });
+}
+
+function selectRepository(repoName) {
+    const repoAnalysis = document.getElementById('repo-analysis');
+    const repoInfo = document.getElementById('selected-repo-info');
+    
+    if (repoInfo) {
+        repoInfo.innerHTML = `<h5>Analyzing: ${repoName}</h5><p>Loading repository data...</p>`;
+    }
+    
+    if (repoAnalysis) {
+        repoAnalysis.style.display = 'block';
+    }
+    
+    // Simulate repository analysis
+    neuroCode.githubIntegration.analyzeRepository(repoName).then(analysis => {
+        if (repoInfo) {
+            repoInfo.innerHTML = `<h5>${repoName}</h5><p>Analysis complete - ${analysis.commitPatterns.length} days analyzed</p>`;
+        }
+        
+        // Update charts and indicators with analysis data
+        updateRepoCharts(analysis);
+    });
+}
+
+function updateRepoCharts(analysis) {
+    // Update commit patterns chart
+    const commitCanvas = document.getElementById('commitPatternsChart');
+    if (commitCanvas) {
+        const ctx = commitCanvas.getContext('2d');
+        const data = {
+            labels: analysis.commitPatterns.map(d => d.day),
+            data: analysis.commitPatterns.map(d => d.commits)
+        };
+        neuroCode.drawBarChart(ctx, commitCanvas, data);
+    }
+    
+    // Update quality trends chart
+    const qualityCanvas = document.getElementById('qualityTrendsChart');
+    if (qualityCanvas) {
+        const ctx = qualityCanvas.getContext('2d');
+        const data = {
+            labels: analysis.qualityTrends.map(d => d.week),
+            datasets: [{
+                label: 'Quality',
+                data: analysis.qualityTrends.map(d => d.quality),
+                color: '#28a745'
+            }]
+        };
+        neuroCode.drawLineChart(ctx, qualityCanvas, data);
+    }
+    
+    // Update psychological indicators
+    const indicators = analysis.psychologicalIndicators;
+    const indicatorElements = {
+        stress: indicators.stressPatterns,
+        productivity: indicators.productivityCycles,
+        collaboration: indicators.collaborationHealth
+    };
+    
+    Object.entries(indicatorElements).forEach(([type, value]) => {
+        const fill = document.querySelector(`.indicator-fill.${type}`);
+        const valueElement = fill?.parentElement.nextElementSibling;
+        
+        if (fill && valueElement) {
+            fill.style.width = value + '%';
+            valueElement.textContent = value + '%';
+        }
+    });
+}
+
+function refreshRepos() {
+    console.log('Refreshing repositories...');
+    loadRepositories();
+}
+
+// Initialize code analysis when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize code analyzer
+    if (typeof neuroCode !== 'undefined') {
+        neuroCode.codeAnalyzer = new CodeAnalyzer();
+        neuroCode.githubIntegration = new GitHubIntegration();
+        neuroCode.uploadedFiles = [];
+        neuroCode.currentLanguage = 'javascript';
+        
+        console.log('Code analysis features initialized');
+    }
+});
