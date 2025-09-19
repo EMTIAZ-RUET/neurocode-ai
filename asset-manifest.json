@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/neurocode-ai/static/css/main.d7904524.css",
-    "main.js": "/neurocode-ai/static/js/main.cf8130e4.js",
+    "main.js": "/neurocode-ai/static/js/main.6f9ece83.js",
     "static/js/453.cc2279bb.chunk.js": "/neurocode-ai/static/js/453.cc2279bb.chunk.js",
     "index.html": "/neurocode-ai/index.html",
     "main.d7904524.css.map": "/neurocode-ai/static/css/main.d7904524.css.map",
-    "main.cf8130e4.js.map": "/neurocode-ai/static/js/main.cf8130e4.js.map",
+    "main.6f9ece83.js.map": "/neurocode-ai/static/js/main.6f9ece83.js.map",
     "453.cc2279bb.chunk.js.map": "/neurocode-ai/static/js/453.cc2279bb.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d7904524.css",
-    "static/js/main.cf8130e4.js"
+    "static/js/main.6f9ece83.js"
   ]
 }

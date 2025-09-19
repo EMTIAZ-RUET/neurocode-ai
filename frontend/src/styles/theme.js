@@ -1,11 +1,13 @@
 const theme = {
   colors: {
     primary: '#667eea',
+    primaryDark: '#5a6fd8',
     secondary: '#764ba2',
     accent: '#f093fb',
     success: '#4ade80',
     warning: '#fbbf24',
     error: '#ef4444',
+    danger: '#ef4444',
     info: '#3b82f6',
     
     // Backgrounds
@@ -15,6 +17,7 @@ const theme = {
     
     // Text
     text: '#1e293b',
+    textSecondary: '#64748b',
     textLight: '#64748b',
     textDark: '#0f172a',
     textWhite: '#ffffff',

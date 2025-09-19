@@ -7,7 +7,10 @@ import Navbar from './components/Layout/Navbar';
 import Hero from './components/Layout/Hero';
 import Dashboard from './components/Dashboard/Dashboard';
 import Analysis from './components/Analysis/Analysis';
+import Insights from './components/Insights/Insights';
+import Settings from './components/Settings/Settings';
 import SystemDesign from './components/SystemDesign/SystemDesign';
+import AIChat from './components/Chat/AIChat';
 import { NeuroCodeProvider } from './context/NeuroCodeContext';
 
 function App() {
@@ -24,9 +27,12 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/analysis" element={<Analysis />} />
+                <Route path="/insights" element={<Insights />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/system-design" element={<SystemDesign />} />
               </Routes>
             </main>
+            <AIChat />
           </div>
         </Router>
       </NeuroCodeProvider>
