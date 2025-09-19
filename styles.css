@@ -269,10 +269,16 @@ body {
 }
 
 /* Psychological State Monitor */
+.psychological-state-card {
+    min-height: 350px;
+}
+
 .psychological-state {
-    display: flex;
+    display: grid;
+    grid-template-columns: 200px 1fr;
     gap: 2rem;
-    align-items: center;
+    align-items: start;
+    padding: 1rem 0;
 }
 
 .state-meter {
@@ -3116,5 +3122,200 @@ nteractive System Design Enhancements */
     .design-btn {
         width: 100%;
         max-width: 250px;
+    }
+}/* E
+nhanced Psychological State Monitor */
+.state-meter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.meter-label {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+    text-align: center;
+}
+
+.state-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.state-icon {
+    font-size: 1.2rem;
+    margin-right: 0.8rem;
+}
+
+.state-icon.stress {
+    color: #ff6b6b;
+}
+
+.state-icon.flow {
+    color: #4ecdc4;
+}
+
+.state-icon.cognitive {
+    color: #45b7d1;
+}
+
+.state-icon.burnout {
+    color: #ffa726;
+}
+
+/* Fix Deep Analysis Layout */
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.analysis-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.profile-content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.profile-radar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-section h4 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.pattern-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.pattern-item span:first-child {
+    min-width: 120px;
+    font-weight: 500;
+    color: #333;
+}
+
+.pattern-bar {
+    flex: 1;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.pattern-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.pattern-item span:last-child {
+    min-width: 40px;
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+
+.indicator-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.indicator-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.indicator-item i {
+    color: #667eea;
+    font-size: 1.2rem;
+}
+
+.indicator-item span {
+    color: #333;
+    font-weight: 500;
+}
+
+/* Fix Activity Timeline */
+.timeline-container {
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.timeline-container canvas {
+    width: 100% !important;
+    height: 300px !important;
+    background: white;
+    border-radius: 8px;
+}
+
+/* Responsive fixes */
+@media (max-width: 1200px) {
+    .profile-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .indicator-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .psychological-state {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .state-meter-container {
+        margin-bottom: 1rem;
+    }
+    
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pattern-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .pattern-item span:first-child {
+        min-width: auto;
     }
 }

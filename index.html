@@ -76,45 +76,58 @@
             
             <div class="dashboard-grid">
                 <!-- Psychological State Monitor -->
-                <div class="dashboard-card">
+                <div class="dashboard-card psychological-state-card">
                     <div class="card-header">
-                        <h3><i class="fas fa-brain"></i> Psychological State</h3>
+                        <h3><i class="fas fa-brain"></i> Psychological State Monitor</h3>
                         <div class="confidence-score">
-                            <span>Confidence: <span id="confidence">94%</span></span>
+                            <span>AI Confidence: <span id="confidence">94%</span></span>
                         </div>
                     </div>
                     <div class="psychological-state">
-                        <div class="state-meter">
-                            <canvas id="stateMeter" width="200" height="200"></canvas>
+                        <div class="state-meter-container">
+                            <canvas id="stateMeter" width="180" height="180"></canvas>
+                            <div class="meter-label">Overall Wellness</div>
                         </div>
                         <div class="state-details">
                             <div class="state-item">
-                                <span class="state-label">Stress Level</span>
+                                <div class="state-header">
+                                    <i class="fas fa-exclamation-triangle state-icon stress"></i>
+                                    <span class="state-label">Stress Level</span>
+                                    <span class="state-value">35%</span>
+                                </div>
                                 <div class="state-bar">
                                     <div class="state-fill stress" style="width: 35%"></div>
                                 </div>
-                                <span class="state-value">35%</span>
                             </div>
                             <div class="state-item">
-                                <span class="state-label">Flow State</span>
+                                <div class="state-header">
+                                    <i class="fas fa-water state-icon flow"></i>
+                                    <span class="state-label">Flow State</span>
+                                    <span class="state-value">78%</span>
+                                </div>
                                 <div class="state-bar">
                                     <div class="state-fill flow" style="width: 78%"></div>
                                 </div>
-                                <span class="state-value">78%</span>
                             </div>
                             <div class="state-item">
-                                <span class="state-label">Cognitive Load</span>
+                                <div class="state-header">
+                                    <i class="fas fa-brain state-icon cognitive"></i>
+                                    <span class="state-label">Cognitive Load</span>
+                                    <span class="state-value">62%</span>
+                                </div>
                                 <div class="state-bar">
                                     <div class="state-fill cognitive" style="width: 62%"></div>
                                 </div>
-                                <span class="state-value">62%</span>
                             </div>
                             <div class="state-item">
-                                <span class="state-label">Burnout Risk</span>
+                                <div class="state-header">
+                                    <i class="fas fa-fire state-icon burnout"></i>
+                                    <span class="state-label">Burnout Risk</span>
+                                    <span class="state-value">23%</span>
+                                </div>
                                 <div class="state-bar">
                                     <div class="state-fill burnout" style="width: 23%"></div>
                                 </div>
-                                <span class="state-value">23%</span>
                             </div>
                         </div>
                     </div>
@@ -529,97 +542,83 @@
         <!-- System Design Section -->
         <section id="system-design" class="system-design-section">
             <div class="section-header">
-                <h2><i class="fas fa-cogs"></i> System Design & Architecture</h2>
+                <h2><i class="fas fa-cogs"></i> NeuroCode: Master System Design</h2>
+                <div class="design-subtitle">
+                    <p>AI-Powered Code Psychology Platform - Comprehensive Technical Specification</p>
+                </div>
                 <div class="design-controls">
-                    <button class="design-btn active" data-view="overview">Overview</button>
-                    <button class="design-btn" data-view="architecture">Architecture</button>
-                    <button class="design-btn" data-view="flows">Interactive Flows</button>
-                    <button class="design-btn" data-view="components">Tools & Components</button>
-                    <button class="design-btn" data-view="operations">System Operations</button>
-                    <button class="design-btn" data-view="feasibility">Feasibility Analysis</button>
+                    <button class="design-btn active" data-view="executive">Executive Summary</button>
+                    <button class="design-btn" data-view="research">Research Foundation</button>
+                    <button class="design-btn" data-view="architecture">System Architecture</button>
                     <button class="design-btn" data-view="ai-integration">AI Integration</button>
-                    <button class="design-btn" data-view="research">Research</button>
+                    <button class="design-btn" data-view="components">Core Components</button>
+                    <button class="design-btn" data-view="implementation">Implementation</button>
+                    <button class="design-btn" data-view="performance">Performance</button>
                 </div>
             </div>
             
             <div class="design-content">
-                <!-- Overview Tab -->
-                <div class="design-tab active" id="overview-tab">
-                    <div class="overview-grid">
-                        <div class="overview-card">
-                            <div class="card-header">
-                                <h3><i class="fas fa-brain"></i> Core Innovation</h3>
-                            </div>
-                            <div class="overview-content">
-                                <p>NeuroCode represents the world's first AI-powered code psychology platform, combining cutting-edge research with practical developer wellness solutions.</p>
-                                <div class="innovation-points">
-                                    <div class="point">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Real-time psychological state detection through code patterns</span>
+                <!-- Executive Summary Tab -->
+                <div class="design-tab active" id="executive-tab">
+                    <div class="executive-summary">
+                        <div class="summary-header">
+                            <h3>Executive Summary</h3>
+                            <p>NeuroCode represents a paradigm shift in software development practices by integrating psychological well-being metrics with code quality analysis. This comprehensive system design leverages cutting-edge AI technologies including Cerebras CS-2 for high-speed inference, Meta's Llama 3.1 for natural language understanding, and modern web technologies for scalable deployment.</p>
+                        </div>
+                        
+                        <div class="innovation-grid">
+                            <div class="innovation-card">
+                                <div class="innovation-header">
+                                    <h4><i class="fas fa-brain"></i> Key Innovation Points</h4>
+                                </div>
+                                <div class="innovation-list">
+                                    <div class="innovation-item">
+                                        <i class="fas fa-star"></i>
+                                        <span><strong>First-of-its-kind</strong> code psychology analysis platform</span>
                                     </div>
-                                    <div class="point">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Privacy-first architecture with GDPR/CCPA compliance</span>
+                                    <div class="innovation-item">
+                                        <i class="fas fa-heartbeat"></i>
+                                        <span><strong>Real-time detection</strong> of developer mental health indicators through code patterns</span>
                                     </div>
-                                    <div class="point">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Multi-modal AI processing with Cerebras CS-2 and Llama 3.1</span>
+                                    <div class="innovation-item">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span><strong>Privacy-first architecture</strong> with GDPR/CCPA compliance</span>
                                     </div>
-                                    <div class="point">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Research-backed interventions from MIT, Stanford, Microsoft</span>
+                                    <div class="innovation-item">
+                                        <i class="fas fa-microchip"></i>
+                                        <span><strong>Multi-modal AI processing</strong> combining statistical analysis and large language models</span>
+                                    </div>
+                                    <div class="innovation-item">
+                                        <i class="fas fa-cogs"></i>
+                                        <span><strong>Fault-tolerant design</strong> with comprehensive edge case handling</span>
+                                    </div>
+                                    <div class="innovation-item">
+                                        <i class="fas fa-university"></i>
+                                        <span><strong>Research-backed interventions</strong> based on academic studies from MIT, Stanford, and Microsoft Research</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="overview-card">
-                            <div class="card-header">
-                                <h3><i class="fas fa-chart-line"></i> Impact Metrics</h3>
-                            </div>
-                            <div class="overview-content">
+                            
+                            <div class="innovation-card">
+                                <div class="innovation-header">
+                                    <h4><i class="fas fa-chart-bar"></i> Business Impact</h4>
+                                </div>
                                 <div class="impact-metrics">
-                                    <div class="impact-item">
-                                        <span class="impact-number">40%</span>
-                                        <span class="impact-label">Reduction in Developer Burnout</span>
+                                    <div class="impact-metric">
+                                        <div class="metric-number">40%</div>
+                                        <div class="metric-description">reduction in developer burnout rates through early detection</div>
                                     </div>
-                                    <div class="impact-item">
-                                        <span class="impact-number">25%</span>
-                                        <span class="impact-label">Improvement in Code Quality</span>
+                                    <div class="impact-metric">
+                                        <div class="metric-number">25%</div>
+                                        <div class="metric-description">improvement in code quality metrics</div>
                                     </div>
-                                    <div class="impact-item">
-                                        <span class="impact-number">$75B</span>
-                                        <span class="impact-label">Addressable Market Size</span>
+                                    <div class="impact-metric">
+                                        <div class="metric-number">$75B</div>
+                                        <div class="metric-description">annual productivity loss addressable market</div>
                                     </div>
-                                    <div class="impact-item">
-                                        <span class="impact-number">83%</span>
-                                        <span class="impact-label">Developers Experience Burnout</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="overview-card full-width">
-                            <div class="card-header">
-                                <h3><i class="fas fa-microscope"></i> Research Foundation</h3>
-                            </div>
-                            <div class="overview-content">
-                                <div class="research-grid">
-                                    <div class="research-item">
-                                        <h4>MIT CSAIL (2024)</h4>
-                                        <p>fMRI studies show sustained coding >3 hours activates same stress pathways as physical trauma. Correlation: 0.829 (p < 0.001)</p>
-                                    </div>
-                                    <div class="research-item">
-                                        <h4>Stanford HCI Lab (2024)</h4>
-                                        <p>62% increase in nested complexity correlates with cognitive overload. 27% productivity boost with Pomodoro interventions.</p>
-                                    </div>
-                                    <div class="research-item">
-                                        <h4>Google Research (2024)</h4>
-                                        <p>89% increase in copy-paste ratio indicates burnout patterns (N=23,456, p<0.001)</p>
-                                    </div>
-                                    <div class="research-item">
-                                        <h4>Microsoft Research (2024)</h4>
-                                        <p>34% increase in commit reversions correlates with anxiety indicators (N=19,871, p<0.01)</p>
+                                    <div class="impact-metric">
+                                        <div class="metric-number">83%</div>
+                                        <div class="metric-description">of developers experience burnout (target market)</div>
                                     </div>
                                 </div>
                             </div>
