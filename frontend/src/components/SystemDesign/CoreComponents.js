@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { motion } from 'framer-motion';
 
 const fadeIn = keyframes`
@@ -30,7 +30,7 @@ const Title = styled.h1`
   margin-bottom: 2rem;
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  animation: ${fadeIn} 1s ease-out;
+  ${css`animation: ${fadeIn} 1s ease-out;`}
 `;
 
 const InteractiveSection = styled(motion.div)`
@@ -89,7 +89,7 @@ const ProcessingNode = styled.div`
   top: ${props => props.top};
   
   &:hover {
-    animation: ${pulse} 1s infinite;
+    ${css`animation: ${pulse} 1s infinite;`}
     box-shadow: 0 0 20px ${props => props.color || '#3498db'};
   }
 `;
@@ -207,7 +207,7 @@ const CoreComponents = () => {
               strokeWidth="3"
               strokeDasharray="10,5"
               style={{
-                animation: `${dataFlow} 3s ease-in-out infinite`
+                animation: 'dataFlow 3s ease-in-out infinite'
               }}
             />
             

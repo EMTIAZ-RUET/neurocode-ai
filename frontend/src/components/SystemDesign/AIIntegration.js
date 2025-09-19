@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { motion } from 'framer-motion';
 
 const processingAnimation = keyframes`
@@ -52,7 +52,7 @@ const AISection = styled(motion.div)`
     width: 200%;
     height: 200%;
     background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-    animation: ${neuralPulse} 3s ease-in-out infinite;
+    ${css`animation: ${neuralPulse} 3s ease-in-out infinite;`}
   }
 `;
 
@@ -106,7 +106,7 @@ const DataFlow = styled.div`
   height: 60px;
   background: linear-gradient(0deg, transparent, #00d4ff, transparent);
   border-radius: 3px;
-  animation: ${processingAnimation} 3s linear infinite;
+  ${css`animation: ${processingAnimation} 3s linear infinite;`}
   left: ${props => props.left};
   top: ${props => props.top};
   opacity: ${props => props.active ? 1 : 0.3};
@@ -309,7 +309,7 @@ const AIIntegration = () => {
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="10,5"
-                style={{ animation: `${dataStream} 2s linear infinite` }}
+                style={{ animation: 'dataStream 2s linear infinite' }}
               />
             </svg>
             

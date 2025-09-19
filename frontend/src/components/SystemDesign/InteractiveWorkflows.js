@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const flowAnimation = keyframes`
@@ -40,7 +40,7 @@ const WorkflowSection = styled(motion.div)`
   
   &:hover {
     border-color: rgba(100, 255, 218, 0.4);
-    animation: ${pulseGlow} 2s ease-in-out infinite;
+    ${css`animation: ${pulseGlow} 2s ease-in-out infinite;`}
   }
 `;
 
@@ -106,7 +106,7 @@ const FlowLine = styled.path`
   stroke-width: 3;
   fill: none;
   stroke-dasharray: 10, 5;
-  animation: ${flowAnimation} 2s ease-in-out infinite;
+  ${css`animation: ${flowAnimation} 2s ease-in-out infinite;`}
   opacity: ${props => props.active ? 1 : 0.3};
 `;
 
