@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
 import theme from './styles/theme';
@@ -18,7 +18,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <NeuroCodeProvider>
-        <Router basename={process.env.NODE_ENV === 'production' ? '/neurocode-ai' : ''}>
+        <Router>
           <div className="App">
             <Navbar />
             <Hero />
