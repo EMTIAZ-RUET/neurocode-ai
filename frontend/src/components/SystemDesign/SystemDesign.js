@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import ComprehensiveSystemDesign from './ComprehensiveSystemDesign';
 import ExecutiveOverview from './ExecutiveOverview';
 import ResearchFoundation from './ResearchFoundation';
 import SystemArchitecture from './SystemArchitecture';
@@ -80,10 +81,10 @@ const DesignContent = styled.div`
 `;
 
 const SystemDesign = () => {
-  const [activeView, setActiveView] = useState('master');
+  const [activeView, setActiveView] = useState('comprehensive');
 
   const views = [
-    { key: 'master', label: 'Master System Design', component: MasterSystemDesign },
+    { key: 'comprehensive', label: '📋 Complete System Design Document', component: ComprehensiveSystemDesign },
     { key: 'overview', label: 'Executive Overview', component: ExecutiveOverview },
     { key: 'research', label: 'Research Foundation', component: ResearchFoundation },
     { key: 'architecture', label: 'System Architecture', component: SystemArchitecture },
@@ -91,10 +92,11 @@ const SystemDesign = () => {
     { key: 'workflows', label: 'Interactive Workflows', component: InteractiveWorkflows },
     { key: 'ai-integration', label: 'AI Integration', component: AIIntegration },
     { key: 'implementation', label: 'Implementation', component: Implementation },
-    { key: 'performance', label: 'Performance & Scaling', component: Performance }
+    { key: 'performance', label: 'Performance & Scaling', component: Performance },
+    { key: 'master', label: 'Master System Design', component: MasterSystemDesign }
   ];
 
-  const ActiveComponent = views.find(view => view.key === activeView)?.component || MasterSystemDesign;
+  const ActiveComponent = views.find(view => view.key === activeView)?.component || ComprehensiveSystemDesign;
 
   return (
     <SystemDesignContainer>

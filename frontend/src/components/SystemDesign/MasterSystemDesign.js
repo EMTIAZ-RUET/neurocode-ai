@@ -1,108 +1,205 @@
 import React from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 const MasterDesignContainer = styled.div`
   max-width: 100%;
-  line-height: 1.6;
+  line-height: 1.8;
   color: #333;
+  font-family: 'Times New Roman', serif;
+`;
+
+const DocumentHeader = styled.div`
+  text-align: center;
+  margin-bottom: 3rem;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 2rem;
+`;
+
+const MainTitle = styled.h1`
+  font-size: 2.25rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 700;
+`;
+
+const Subtitle = styled.p`
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  font-style: italic;
+  margin-bottom: 2rem;
+`;
+
+const AbstractBox = styled.div`
+  background: #ecf0f1;
+  padding: 2rem;
+  border-radius: 5px;
+  margin: 2rem 0;
+  font-style: italic;
+  border-left: 4px solid #3498db;
 `;
 
 const Section = styled.section`
   margin-bottom: 3rem;
+  page-break-inside: avoid;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.8rem;
+  font-size: 1.75rem;
+  color: #2c3e50;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 5px solid #3498db;
+  padding-left: 15px;
   font-weight: 600;
-  color: #667eea;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #667eea;
-  padding-bottom: 0.5rem;
 `;
 
 const SubTitle = styled.h3`
   font-size: 1.4rem;
+  color: #34495e;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   font-weight: 600;
-  color: #555;
-  margin: 1.5rem 0 1rem 0;
 `;
 
 const SubSubTitle = styled.h4`
   font-size: 1.2rem;
+  color: #555;
+  margin: 1.5rem 0 0.75rem 0;
   font-weight: 600;
-  color: #666;
-  margin: 1rem 0 0.75rem 0;
 `;
 
 const Paragraph = styled.p`
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-align: justify;
+  line-height: 1.8;
 `;
 
 const List = styled.ul`
-  margin: 1rem 0;
-  padding-left: 2rem;
+  margin: 1.5rem 0;
+  padding-left: 3rem;
+`;
+
+const OrderedList = styled.ol`
+  margin: 1.5rem 0;
+  padding-left: 3rem;
 `;
 
 const ListItem = styled.li`
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
   background: #f8f9fa;
   border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 `;
 
 const TableHeader = styled.th`
-  background: #667eea;
+  background: #3498db;
   color: white;
-  padding: 1rem;
+  padding: 1.2rem;
   text-align: left;
   font-weight: 600;
 `;
 
 const TableCell = styled.td`
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e9ecef;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid #ddd;
+`;
+
+const TableRow = styled.tr`
+  &:nth-child(even) {
+    background: #f2f2f2;
+  }
 `;
 
 const HighlightBox = styled.div`
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  border-left: 4px solid #667eea;
+  background: #fffbf0;
+  border: 2px solid #f39c12;
   padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 5px;
+`;
+
+const TechStackBox = styled.div`
+  background: #e8f4f8;
+  padding: 2rem;
+  border-radius: 5px;
+  margin: 2rem 0;
+`;
+
+const ReferenceBox = styled.div`
+  background: #f8f9fa;
+  padding: 1rem 1.5rem;
   margin: 1.5rem 0;
-  border-radius: 0 8px 8px 0;
+  border-left: 3px solid #3498db;
+  font-size: 0.95rem;
+  border-radius: 0 4px 4px 0;
+`;
+
+const FigureContainer = styled.div`
+  margin: 2rem 0;
+  text-align: center;
+`;
+
+const FigureCaption = styled.p`
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 1rem;
+  font-style: italic;
 `;
 
 const StatBox = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
 `;
 
-const StatItem = styled.div`
-  background: #f8f9fa;
-  padding: 1rem;
-  border-radius: 8px;
+const StatItem = styled(motion.div)`
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
   text-align: center;
-  border: 1px solid #e9ecef;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+  }
 `;
 
 const StatValue = styled.div`
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: #667eea;
   margin-bottom: 0.5rem;
 `;
 
 const StatLabel = styled.div`
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 1rem;
+  opacity: 0.9;
+  line-height: 1.4;
+`;
+
+const ArchitectureDiagram = styled.div`
+  margin: 2rem 0;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2rem;
+`;
+
+const DiagramSVG = styled.svg`
+  width: 100%;
+  height: 400px;
+  border-radius: 8px;
 `;
 
 const MasterSystemDesign = () => {

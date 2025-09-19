@@ -24,7 +24,7 @@ function App() {
             <Hero />
             <main>
               <Routes>
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/" element={<SystemDesign />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/analysis" element={<Analysis />} />
                 <Route path="/insights" element={<Insights />} />

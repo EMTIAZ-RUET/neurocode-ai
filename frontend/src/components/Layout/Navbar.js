@@ -59,17 +59,24 @@ const NavMenu = styled.ul`
 `;
 
 const NavLink = styled(Link)`
-  color: ${props => props.isActive ? props.theme.colors.accent : props.theme.colors.textWhite};
+  color: ${props => {
+    if (props.isActive) return props.theme.colors.accent;
+    if (props.highlight) return '#FFD700';
+    return props.theme.colors.textWhite;
+  }};
   text-decoration: none;
-  font-weight: ${props => props.isActive ? 'bold' : 'normal'};
+  font-weight: ${props => props.isActive || props.highlight ? 'bold' : 'normal'};
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
   border-radius: ${props => props.theme.borderRadius.md};
   transition: all ${props => props.theme.transitions.fast};
   position: relative;
+  background: ${props => props.highlight ? 'rgba(255, 215, 0, 0.1)' : 'transparent'};
+  border: ${props => props.highlight ? '1px solid rgba(255, 215, 0, 0.3)' : 'none'};
   
   &:hover {
-    color: ${props => props.theme.colors.accent};
+    color: ${props => props.highlight ? '#FFD700' : props.theme.colors.accent};
     background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
   }
   
   @media (max-width: ${props => props.theme.breakpoints.md}) {
@@ -116,10 +123,10 @@ const Navbar = () => {
   const location = useLocation();
 
   const navItems = [
+    { path: '/system-design', label: '🏗️ System Design Document', icon: 'fas fa-file-alt', highlight: true },
     { path: '/dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
     { path: '/analysis', label: 'Analysis', icon: 'fas fa-chart-bar' },
     { path: '/insights', label: 'Insights', icon: 'fas fa-lightbulb' },
-    { path: '/system-design', label: 'System Design', icon: 'fas fa-cogs' },
     { path: '/settings', label: 'Settings', icon: 'fas fa-cog' }
   ];
 
@@ -142,7 +149,8 @@ const Navbar = () => {
             >
               <NavLink
                 to={item.path}
-                isActive={location.pathname === item.path}
+                isActive={location.pathname === item.path || (item.path === '/system-design' && location.pathname === '/')}
+                highlight={item.highlight}
                 onClick={() => setIsOpen(false)}
               >
                 <i className={item.icon}></i> {item.label}
