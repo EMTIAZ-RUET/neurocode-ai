@@ -53,9 +53,20 @@ rm -rf node_modules/.cache/
 print_status "Cleaning npm cache..."
 npm cache clean --force
 
-# Install dependencies
+# Install dependencies with fallback
 print_status "Installing dependencies..."
-npm ci
+if ! npm ci; then
+    print_warning "npm ci failed, trying npm install..."
+    rm -f package-lock.json
+    npm install
+fi
+
+# Check for common missing dependencies
+print_status "Checking for missing postcss dependencies..."
+if ! npm list cosmiconfig > /dev/null 2>&1; then
+    print_warning "Installing missing cosmiconfig dependency..."
+    npm install cosmiconfig
+fi
 
 # Verify critical files exist
 print_status "Verifying critical files..."
