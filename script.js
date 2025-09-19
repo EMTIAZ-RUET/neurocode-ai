@@ -1726,4 +1726,118 @@ document.addEventListener('DOMContentLoaded', function() {
         
         console.log('Code analysis features initialized');
     }
+});// Enha
+nced System Design Functions
+NeuroCodeAgent.prototype.switchDesignTab = function(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.design-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Show selected tab
+    const targetTab = document.getElementById(tabName + '-tab');
+    if (targetTab) {
+        targetTab.classList.add('active');
+        
+        // Initialize Mermaid diagrams if this is the flows tab
+        if (tabName === 'flows') {
+            this.initializeMermaidDiagrams();
+        }
+    }
+    
+    console.log(`Switched to ${tabName} design tab`);
+};
+
+NeuroCodeAgent.prototype.initializeMermaidDiagrams = function() {
+    // Load Mermaid.js if not already loaded
+    if (typeof mermaid === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js';
+        script.onload = () => {
+            mermaid.initialize({
+                theme: 'default',
+                flowchart: { 
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis'
+                },
+                sequence: { 
+                    useMaxWidth: true 
+                },
+                gantt: { 
+                    useMaxWidth: true 
+                }
+            });
+            
+            // Re-render all mermaid diagrams
+            mermaid.init();
+        };
+        document.head.appendChild(script);
+    } else {
+        // Re-render all mermaid diagrams
+        mermaid.init();
+    }
+};
+
+NeuroCodeAgent.prototype.switchFlowDiagram = function(flowType) {
+    // Hide all flow diagrams
+    document.querySelectorAll('.flow-diagram').forEach(diagram => {
+        diagram.classList.remove('active');
+    });
+    
+    // Update flow buttons
+    document.querySelectorAll('.flow-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Show selected flow diagram
+    const targetFlow = document.getElementById(flowType + '-flow');
+    const targetBtn = document.querySelector(`[data-flow="${flowType}"]`);
+    
+    if (targetFlow && targetBtn) {
+        targetFlow.classList.add('active');
+        targetBtn.classList.add('active');
+    }
+    
+    console.log(`Switched to ${flowType} flow diagram`);
+};
+
+// Global functions for interactive system design
+function switchFlowDiagram(flowType) {
+    if (neuroCode) {
+        neuroCode.switchFlowDiagram(flowType);
+    }
+}
+
+// Enhanced event listeners for new interactive elements
+document.addEventListener('DOMContentLoaded', function() {
+    // Flow diagram selector buttons
+    document.querySelectorAll('.flow-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const flowType = e.target.getAttribute('data-flow');
+            if (flowType && neuroCode) {
+                neuroCode.switchFlowDiagram(flowType);
+            }
+        });
+    });
+    
+    // Enhanced design tab switching
+    document.querySelectorAll('.design-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.design-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            const tabName = e.target.getAttribute('data-view');
+            if (tabName && neuroCode) {
+                neuroCode.switchDesignTab(tabName);
+            }
+        });
+    });
+    
+    // Initialize Mermaid on page load
+    if (typeof neuroCode !== 'undefined') {
+        setTimeout(() => {
+            neuroCode.initializeMermaidDiagrams();
+        }, 1000);
+    }
 });
