@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCode Data Output Specifications</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+            font-size: 1.4em;
+        }
+        
+        .data-structure {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+        }
+        
+        .data-structure::before {
+            content: "📊 Data Structure";
+            position: absolute;
+            margin-top: -40px;
+            margin-left: -10px;
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .api-endpoint {
+            background: #27ae60;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .api-endpoint::before {
+            content: "🔗 API Endpoint";
+            position: absolute;
+            margin-top: -35px;
+            margin-left: -10px;
+            background: #27ae60;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .metric-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        
+        .metric-type {
+            background: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        .data-flow-diagram {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .output-example {
+            background: #e8f5e8;
+            border: 2px solid #27ae60;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .output-example::before {
+            content: "✅ Example Output";
+            position: absolute;
+            margin-top: -35px;
+            margin-left: -10px;
+            background: #27ae60;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        
+        .data-category {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .category-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .category-title {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .data-point {
+            background: white;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border-left: 3px solid #17a2b8;
+            font-size: 0.9em;
+        }
+        
+        .frequency-badge {
+            display: inline-block;
+            background: #17a2b8;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 10px;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .copy-button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 NeuroCode Data Output Specifications</h1>
+        
+        <div class="info-box">
+            <h3>📋 Overview</h3>
+            <p>This document defines all data outputs, API responses, and user-facing information that the NeuroCode system generates. It covers real-time metrics, historical analytics, predictions, and intervention recommendations.</p>
+        </div>
+
+        <h2>1. Real-time Psychological Metrics</h2>
+        
+        <div class="data-category">
+            <div class="category-card">
+                <div class="category-title">🧠 Core Wellness Metrics</div>
+                
+                <div class="data-point">
+                    <strong>Wellness Score</strong> <span class="frequency-badge">Real-time</span><br>
+                    Range: 0-100 | Type: Float | Update: Every 30 seconds
+                </div>
+                
+                <div class="data-point">
+                    <strong>Stress Level</strong> <span class="frequency-badge">Real-time</span><br>
+                    Range: 0-100 | Type: Float | Update: Every 15 seconds
+                </div>
+                
+                <div class="data-point">
+                    <strong>Burnout Risk</strong> <span class="frequency-badge">Hourly</span><br>
+                    Range: 0-100 | Type: Float | Update: Every hour
+                </div>
+                
+                <div class="data-point">
+                    <strong>Flow State Indicator</strong> <span class="frequency-badge">Real-time</span><br>
+                    Range: 0-100 | Type: Float | Update: Every 60 seconds
+                </div>
+                
+                <div class="data-point">
+                    <strong>Cognitive Load</strong> <span class="frequency-badge">Real-time</span><br>
+                    Range: 0-100 | Type: Float | Update: Every 30 seconds
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-title">⚡ Behavioral Indicators</div>
+                
+                <div class="data-point">
+                    <strong>Keystroke Dynamics</strong> <span class="frequency-badge">Real-time</span><br>
+                    Type: Object | Includes: rhythm, pressure, timing
+                </div>
+                
+                <div class="data-point">
+                    <strong>Code Switching Frequency</strong> <span class="frequency-badge">Real-time</span><br>
+                    Type: Integer | Unit: switches per minute
+                </div>
+                
+                <div class="data-point">
+                    <strong>Session Duration</strong> <span class="frequency-badge">Continuous</span><br>
+                    Type: Integer | Unit: minutes
+                </div>
+                
+                <div class="data-point">
+                    <strong>Break Patterns</strong> <span class="frequency-badge">Daily</span><br>
+                    Type: Array | Includes: frequency, duration, timing
+                </div>
+                
+                <div class="data-point">
+                    <strong>Error Rate Trend</strong> <span class="frequency-badge">Real-time</span><br>
+                    Type: Float | Unit: errors per hour
+                </div>
+            </div>
+        </div>
+
+        <h3>1.1 Real-time Wellness API Response</h3>
+        
+        <div class="api-endpoint">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+GET /api/v1/wellness/realtime/{user_id}
+        </div>
+        
+        <div class="data-structure">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+{
+  "user_id": "usr_7f8a9b2c3d4e5f6g",
+  "timestamp": "2024-01-15T14:30:45.123Z",
+  "wellness_metrics": {
+    "overall_score": 78.5,
+    "stress_level": 42.3,
+    "burnout_risk": 18.7,
+    "flow_state": 85.2,
+    "cognitive_load": 56.8,
+    "confidence_score": 0.92
+  },
+  "behavioral_indicators": {
+    "keystroke_dynamics": {
+      "rhythm_consistency": 0.87,
+      "typing_speed": 65.4,
+      "pressure_variance": 0.23,
+      "pause_patterns": "normal"
+    },
+    "session_metrics": {
+      "duration_minutes": 127,
+      "file_switches": 23,
+      "error_corrections": 8,
+      "break_count": 2
+    },
+    "focus_indicators": {
+      "deep_work_duration": 45,
+      "distraction_events": 3,
+      "context_switches": 12
+    }
+  },
+  "trend_analysis": {
+    "stress_trend": "increasing",
+    "productivity_trend": "stable",
+    "wellness_change_24h": 5.2,
+    "pattern_anomalies": []
+  },
+  "predictions": {
+    "burnout_risk_7d": 25.4,
+    "optimal_break_time": "2024-01-15T15:00:00Z",
+    "productivity_forecast": "high",
+    "recommended_session_end": "2024-01-15T16:15:00Z"
+  }
+}
+        </div>
+
+        <h2>2. Code Quality & Complexity Metrics</h2>
+        
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-title">📈 Code Complexity Analysis</span>
+                <span class="metric-type">Real-time</span>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Description</th>
+                        <th>Range</th>
+                        <th>Update Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cyclomatic Complexity</td>
+                        <td>McCabe complexity measure</td>
+                        <td>1-50+</td>
+                        <td>Per file save</td>
+                    </tr>
+                    <tr>
+                        <td>Cognitive Complexity</td>
+                        <td>Human readability measure</td>
+                        <td>0-100+</td>
+                        <td>Per file save</td>
+                    </tr>
+                    <tr>
+                        <td>Technical Debt Ratio</td>
+                        <td>Maintenance effort indicator</td>
+                        <td>0-1</td>
+                        <td>Daily</td>
+                    </tr>
+                    <tr>
+                        <td>Code Duplication</td>
+                        <td>Percentage of duplicated code</td>
+                        <td>0-100%</td>
+                        <td>Per commit</td>
+                    </tr>
+                    <tr>
+                        <td>Test Coverage</td>
+                        <td>Percentage of code covered by tests</td>
+                        <td>0-100%</td>
+                        <td>Per test run</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="api-endpoint">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+GET /api/v1/code-quality/{user_id}/current
+        </div>
+        
+        <div class="data-structure">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+{
+  "user_id": "usr_7f8a9b2c3d4e5f6g",
+  "timestamp": "2024-01-15T14:30:45.123Z",
+  "current_file": {
+    "path": "src/components/Dashboard.tsx",
+    "language": "typescript",
+    "lines_of_code": 245,
+    "complexity_metrics": {
+      "cyclomatic_complexity": 12,
+      "cognitive_complexity": 18,
+      "nesting_depth": 4,
+      "method_count": 8,
+      "class_count": 1
+    },
+    "quality_scores": {
+      "maintainability": 0.78,
+      "readability": 0.85,
+      "testability": 0.72,
+      "overall_quality": 0.78
+    }
+  },
+  "session_aggregates": {
+    "files_modified": 7,
+    "total_loc_added": 156,
+    "total_loc_deleted": 43,
+    "average_complexity": 8.4,
+    "complexity_trend": "increasing"
+  },
+  "psychological_correlation": {
+    "complexity_stress_correlation": 0.67,
+    "quality_flow_correlation": 0.82,
+    "refactoring_wellness_impact": 0.45
+  },
+  "recommendations": [
+    {
+      "type": "complexity_reduction",
+      "priority": "medium",
+      "suggestion": "Consider breaking down the handleSubmit method (complexity: 15)",
+      "estimated_impact": "reduce stress by 8%"
+    }
+  ]
+}
+        </div>
+
+        <h2>3. AI-Generated Insights & Predictions</h2>
+        
+        <div class="data-category">
+            <div class="category-card">
+                <div class="category-title">🤖 Cerebras Pattern Analysis</div>
+                
+                <div class="data-point">
+                    <strong>Behavioral Pattern Recognition</strong><br>
+                    Identifies recurring patterns in coding behavior and correlates with psychological states
+                </div>
+                
+                <div class="data-point">
+                    <strong>Anomaly Detection</strong><br>
+                    Flags unusual deviations from normal coding patterns that may indicate stress or fatigue
+                </div>
+                
+                <div class="data-point">
+                    <strong>Productivity Forecasting</strong><br>
+                    Predicts optimal work periods and potential productivity dips
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-title">🧠 Llama NLP Analysis</div>
+                
+                <div class="data-point">
+                    <strong>Commit Message Sentiment</strong><br>
+                    Analyzes emotional tone in commit messages and code comments
+                </div>
+                
+                <div class="data-point">
+                    <strong>Code Intent Classification</strong><br>
+                    Categorizes code changes by intent (feature, bug fix, refactoring, etc.)
+                </div>
+                
+                <div class="data-point">
+                    <strong>Documentation Quality Assessment</strong><br>
+                    Evaluates completeness and clarity of code documentation
+                </div>
+            </div>
+        </div>
+        
+        <div class="api-endpoint">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+GET /api/v1/insights/{user_id}/predictions
+        </div>
+        
+        <div class="data-structure">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+{
+  "user_id": "usr_7f8a9b2c3d4e5f6g",
+  "generated_at": "2024-01-15T14:30:45.123Z",
+  "cerebras_analysis": {
+    "pattern_recognition": {
+      "dominant_patterns": [
+        {
+          "pattern_id": "morning_productivity_peak",
+          "confidence": 0.94,
+          "description": "Highest productivity between 9-11 AM",
+          "frequency": "daily",
+          "impact_score": 0.87
+        },
+        {
+          "pattern_id": "afternoon_complexity_increase",
+          "confidence": 0.78,
+          "description": "Code complexity increases after 2 PM",
+          "frequency": "4 days/week",
+          "impact_score": 0.65
+        }
+      ],
+      "anomalies_detected": [
+        {
+          "anomaly_type": "unusual_error_rate",
+          "severity": "medium",
+          "description": "Error rate 3x higher than baseline",
+          "first_detected": "2024-01-15T13:45:00Z",
+          "potential_causes": ["fatigue", "complex_task", "interruptions"]
+        }
+      ]
+    },
+    "predictions": {
+      "burnout_risk": {
+        "current": 18.7,
+        "7_day_forecast": 25.4,
+        "14_day_forecast": 32.1,
+        "confidence": 0.89,
+        "key_factors": ["increasing_complexity", "reduced_breaks", "weekend_work"]
+      },
+      "productivity_forecast": {
+        "next_2_hours": "high",
+        "today_remaining": "medium",
+        "tomorrow": "high",
+        "optimal_times": ["09:00-11:00", "14:00-16:00"]
+      }
+    }
+  },
+  "llama_analysis": {
+    "sentiment_analysis": {
+      "commit_messages": {
+        "overall_sentiment": 0.23,
+        "trend": "declining",
+        "recent_messages": [
+          {
+            "message": "Fix another stupid bug in the payment system",
+            "sentiment": -0.67,
+            "emotions": ["frustration", "annoyance"],
+            "timestamp": "2024-01-15T13:20:00Z"
+          },
+          {
+            "message": "Refactor user authentication flow",
+            "sentiment": 0.15,
+            "emotions": ["neutral", "focused"],
+            "timestamp": "2024-01-15T11:45:00Z"
+          }
+        ]
+      },
+      "code_comments": {
+        "quality_score": 0.72,
+        "sentiment": 0.45,
+        "clarity_rating": 0.68
+      }
+    },
+    "intent_classification": {
+      "recent_changes": [
+        {
+          "change_type": "bug_fix",
+          "confidence": 0.92,
+          "complexity": "high",
+          "estimated_effort": "3 hours"
+        },
+        {
+          "change_type": "feature_development",
+          "confidence": 0.87,
+          "complexity": "medium",
+          "estimated_effort": "1.5 hours"
+        }
+      ]
+    }
+  },
+  "combined_insights": [
+    {
+      "insight_type": "wellness_alert",
+      "priority": "high",
+      "title": "Stress indicators increasing",
+      "description": "Multiple signals suggest rising stress: negative commit sentiment, increased error rate, and complex task focus.",
+      "recommendations": [
+        "Take a 15-minute break within the next 30 minutes",
+        "Consider pair programming for the current complex task",
+        "Schedule a brief walk or stretching session"
+      ],
+      "confidence": 0.91
+    }
+  ]
+}
+        </div>
+
+        <h2>4. Intervention Recommendations</h2>
+        
+        <div class="metric-card">
+            <div class="metric-header">
+                <span class="metric-title">💡 Smart Interventions</span>
+                <span class="metric-type">Context-aware</span>
+            </div>
+            
+            <p>The system generates personalized intervention recommendations based on real-time analysis and historical patterns.</p>
+        </div>
+        
+        <div class="api-endpoint">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+GET /api/v1/interventions/{user_id}/recommendations
+        </div>
+        
+        <div class="data-structure">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+{
+  "user_id": "usr_7f8a9b2c3d4e5f6g",
+  "generated_at": "2024-01-15T14:30:45.123Z",
+  "current_context": {
+    "stress_level": 72.3,
+    "flow_state": 34.2,
+    "session_duration": 127,
+    "last_break": "2024-01-15T12:45:00Z",
+    "current_task_complexity": "high"
+  },
+  "recommendations": [
+    {
+      "id": "rec_001",
+      "type": "immediate_break",
+      "priority": "high",
+      "trigger_conditions": {
+        "stress_level": "> 70",
+        "time_since_break": "> 90 minutes",
+        "error_rate": "increasing"
+      },
+      "intervention": {
+        "title": "Take an Immediate Break",
+        "description": "Your stress level is elevated and you haven't taken a break in 90 minutes.",
+        "action": "step_away_from_computer",
+        "duration": "10-15 minutes",
+        "suggested_activities": [
+          "Take a short walk",
+          "Do breathing exercises",
+          "Stretch at your desk",
+          "Get a drink of water"
+        ]
+      },
+      "expected_impact": {
+        "stress_reduction": "15-25%",
+        "focus_improvement": "20-30%",
+        "error_rate_reduction": "40%"
+      },
+      "delivery_method": "ide_notification",
+      "urgency": "now",
+      "confidence": 0.94
+    },
+    {
+      "id": "rec_002",
+      "type": "task_simplification",
+      "priority": "medium",
+      "trigger_conditions": {
+        "cognitive_load": "> 80",
+        "complexity_trend": "increasing",
+        "flow_state": "< 40"
+      },
+      "intervention": {
+        "title": "Simplify Current Task",
+        "description": "The current task appears complex. Consider breaking it into smaller parts.",
+        "action": "task_decomposition",
+        "suggestions": [
+          "Create a TODO list for the current feature",
+          "Implement one small part at a time",
+          "Write tests for each component separately",
+          "Consider pair programming for complex logic"
+        ]
+      },
+      "expected_impact": {
+        "cognitive_load_reduction": "20-30%",
+        "completion_confidence": "increase by 40%"
+      },
+      "delivery_method": "dashboard_card",
+      "urgency": "within_hour",
+      "confidence": 0.78
+    },
+    {
+      "id": "rec_003",
+      "type": "schedule_optimization",
+      "priority": "low",
+      "trigger_conditions": {
+        "productivity_pattern": "morning_peak_detected",
+        "current_time": "afternoon"
+      },
+      "intervention": {
+        "title": "Optimize Tomorrow's Schedule",
+        "description": "You're most productive in the morning. Consider scheduling complex tasks then.",
+        "action": "calendar_planning",
+        "suggestions": [
+          "Block 9-11 AM for complex development work",
+          "Schedule meetings in the afternoon",
+          "Reserve mornings for deep focus tasks",
+          "Plan code reviews for after lunch"
+        ]
+      },
+      "expected_impact": {
+        "productivity_increase": "25-35%",
+        "stress_reduction": "10-15%"
+      },
+      "delivery_method": "email_summary",
+      "urgency": "end_of_day",
+      "confidence": 0.89
+    }
+  ],
+  "intervention_history": {
+    "total_recommendations": 47,
+    "accepted_interventions": 32,
+    "acceptance_rate": 0.68,
+    "most_effective": "break_reminders",
+    "least_effective": "meeting_scheduling"
+  }
+}
+        </div>
+
+        <h2>5. Team Analytics Dashboard Data</h2>
+        
+        <div class="api-endpoint">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+GET /api/v1/team/{team_id}/analytics
+        </div>
+        
+        <div class="data-structure">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+{
+  "team_id": "team_dev_alpha",
+  "team_name": "Development Team Alpha",
+  "generated_at": "2024-01-15T14:30:45.123Z",
+  "summary_metrics": {
+    "total_members": 9,
+    "active_members": 8,
+    "average_wellness": 72.4,
+    "team_stress_level": 45.2,
+    "collective_burnout_risk": 28.7,
+    "productivity_index": 0.84
+  },
+  "risk_distribution": {
+    "healthy": 6,
+    "at_risk": 2,
+    "critical": 1
+  },
+  "member_details": [
+    {
+      "user_id": "usr_john_smith",
+      "name": "John Smith",
+      "role": "Senior Developer",
+      "status": "healthy",
+      "metrics": {
+        "wellness_score": 82.1,
+        "stress_level": 28.4,
+        "burnout_risk": 15.2,
+        "productivity_trend": "increasing",
+        "last_active": "2024-01-15T14:25:00Z"
+      },
+      "recent_patterns": [
+        "consistent_morning_productivity",
+        "regular_break_taking",
+        "healthy_work_hours"
+      ]
+    },
+    {
+      "user_id": "usr_emily_martinez",
+      "name": "Emily Martinez",
+      "role": "Full Stack Developer",
+      "status": "at_risk",
+      "metrics": {
+        "wellness_score": 58.3,
+        "stress_level": 72.1,
+        "burnout_risk": 45.7,
+        "productivity_trend": "declining",
+        "last_active": "2024-01-15T14:28:00Z"
+      },
+      "risk_factors": [
+        "extended_work_sessions",
+        "increasing_complexity_tasks",
+        "reduced_break_frequency"
+      ],
+      "recommended_actions": [
+        "schedule_1on1_meeting",
+        "workload_redistribution",
+        "mandatory_break_reminders"
+      ]
+    },
+    {
+      "user_id": "usr_david_kim",
+      "name": "David Kim",
+      "role": "Backend Developer",
+      "status": "critical",
+      "metrics": {
+        "wellness_score": 32.1,
+        "stress_level": 89.4,
+        "burnout_risk": 78.3,
+        "productivity_trend": "severely_declining",
+        "last_active": "2024-01-15T14:15:00Z"
+      },
+      "critical_indicators": [
+        "extreme_stress_levels",
+        "weekend_work_pattern",
+        "negative_commit_sentiment",
+        "error_rate_spike"
+      ],
+      "urgent_actions": [
+        "immediate_manager_intervention",
+        "workload_reduction",
+        "wellness_support_resources",
+        "consider_time_off"
+      ]
+    }
+  ],
+  "team_trends": {
+    "wellness_trend_7d": -3.2,
+    "stress_trend_7d": 8.7,
+    "productivity_trend_7d": -5.4,
+    "collaboration_index": 0.76
+  },
+  "alerts": [
+    {
+      "type": "critical_member",
+      "member": "David Kim",
+      "message": "Immediate intervention required - burnout risk at 78%",
+      "priority": "urgent",
+      "created_at": "2024-01-15T14:30:00Z"
+    },
+    {
+      "type": "team_trend",
+      "message": "Team stress levels increasing over past week",
+      "priority": "medium",
+      "created_at": "2024-01-15T09:00:00Z"
+    }
+  ],
+  "recommendations": [
+    {
+      "type": "team_intervention",
+      "title": "Team Wellness Session",
+      "description": "Consider organizing a team wellness check-in meeting",
+      "priority": "high",
+      "estimated_impact": "reduce team stress by 15-20%"
+    },
+    {
+      "type": "workload_balancing",
+      "title": "Redistribute Complex Tasks",
+      "description": "Move some complex tasks from at-risk members to healthy members",
+      "priority": "medium",
+      "estimated_impact": "reduce individual burnout risk by 10-15%"
+    }
+  ]
+}
+        </div>
+
+        <h2>6. Historical Analytics & Reports</h2>
+        
+        <div class="data-category">
+            <div class="category-card">
+                <div class="category-title">📈 Time Series Data</div>
+                
+                <div class="data-point">
+                    <strong>Daily Wellness Trends</strong><br>
+                    Aggregated daily metrics for trend analysis and pattern recognition
+                </div>
+                
+                <div class="data-point">
+                    <strong>Weekly Performance Reports</strong><br>
+                    Comprehensive weekly summaries with insights and recommendations
+                </div>
+                
+                <div class="data-point">
+                    <strong>Monthly Wellness Assessments</strong><br>
+                    Detailed monthly analysis with long-term trend identification
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-title">📊 Comparative Analytics</div>
+                
+                <div class="data-point">
+                    <strong>Peer Benchmarking</strong><br>
+                    Anonymous comparison with similar roles and experience levels
+                </div>
+                
+                <div class="data-point">
+                    <strong>Industry Standards</strong><br>
+                    Comparison against industry wellness and productivity benchmarks
+                </div>
+                
+                <div class="data-point">
+                    <strong>Personal Progress Tracking</strong><br>
+                    Individual improvement metrics and goal achievement tracking
+                </div>
+            </div>
+        </div>
+        
+        <div class="api-endpoint">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+GET /api/v1/analytics/{user_id}/weekly-report
+        </div>
+        
+        <div class="output-example">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+{
+  "report_id": "weekly_2024_w03",
+  "user_id": "usr_7f8a9b2c3d4e5f6g",
+  "period": {
+    "start_date": "2024-01-15T00:00:00Z",
+    "end_date": "2024-01-21T23:59:59Z",
+    "total_work_hours": 42.5
+  },
+  "wellness_summary": {
+    "average_wellness_score": 74.2,
+    "wellness_trend": "improving",
+    "best_day": {
+      "date": "2024-01-18",
+      "score": 89.3,
+      "factors": ["good_sleep", "morning_exercise", "focused_work"]
+    },
+    "challenging_day": {
+      "date": "2024-01-16",
+      "score": 52.1,
+      "factors": ["late_night", "complex_debugging", "meeting_heavy"]
+    }
+  },
+  "productivity_analysis": {
+    "total_commits": 23,
+    "lines_of_code": 1247,
+    "average_complexity": 7.8,
+    "bug_fixes": 5,
+    "features_completed": 2,
+    "productivity_score": 0.82,
+    "peak_hours": ["09:00-11:00", "14:00-16:00"]
+  },
+  "behavioral_insights": [
+    {
+      "pattern": "morning_productivity_peak",
+      "description": "You're consistently most productive between 9-11 AM",
+      "confidence": 0.94,
+      "recommendation": "Schedule complex tasks during this window"
+    },
+    {
+      "pattern": "afternoon_energy_dip",
+      "description": "Energy levels drop significantly after lunch",
+      "confidence": 0.78,
+      "recommendation": "Consider a short walk or light exercise after lunch"
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Stress Management Champion",
+      "description": "Maintained stress levels below 50% for 5 consecutive days",
+      "earned_date": "2024-01-20"
+    },
+    {
+      "title": "Flow State Master",
+      "description": "Achieved 3+ hour flow states on 3 different days",
+      "earned_date": "2024-01-19"
+    }
+  ],
+  "areas_for_improvement": [
+    {
+      "area": "break_frequency",
+      "current_score": 0.65,
+      "target_score": 0.80,
+      "suggestion": "Take breaks every 90 minutes instead of 2+ hours"
+    },
+    {
+      "area": "work_life_balance",
+      "current_score": 0.72,
+      "target_score": 0.85,
+      "suggestion": "Avoid checking work messages after 7 PM"
+    }
+  ],
+  "next_week_recommendations": [
+    "Block calendar for deep work sessions during peak hours",
+    "Set up automatic break reminders every 90 minutes",
+    "Try the Pomodoro technique for complex debugging tasks",
+    "Schedule a mid-week wellness check-in"
+  ]
+}
+        </div>
+
+        <h2>7. Privacy & Data Protection</h2>
+        
+        <div class="warning-box">
+            <h3>🔒 Privacy Considerations</h3>
+            <ul>
+                <li><strong>Data Anonymization:</strong> All personal identifiers are removed before processing</li>
+                <li><strong>Aggregation Only:</strong> Individual keystrokes and detailed code content are never stored</li>
+                <li><strong>Retention Limits:</strong> Raw behavioral data is automatically deleted after 90 days</li>
+                <li><strong>User Control:</strong> Users can disable any metric collection or delete their data at any time</li>
+                <li><strong>GDPR Compliance:</strong> Full compliance with European data protection regulations</li>
+            </ul>
+        </div>
+        
+        <div class="data-structure">
+            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+// Privacy-Protected Data Structure Example
+{
+  "user_id": "hashed_anonymous_id",  // No real names or emails
+  "metrics": {
+    "aggregated_only": true,
+    "time_window": "5_minute_intervals",
+    "raw_data_retention": "0_days",
+    "processed_data_retention": "90_days"
+  },
+  "data_categories": {
+    "behavioral_patterns": "anonymized_aggregates",
+    "code_content": "never_stored",
+    "keystroke_details": "statistical_summaries_only",
+    "personal_info": "completely_excluded"
+  },
+  "user_controls": {
+    "data_export": "available",
+    "data_deletion": "immediate",
+    "metric_selection": "granular_control",
+    "sharing_preferences": "user_defined"
+  }
+}
+        </div>
+
+        <div class="info-box">
+            <h3>📊 Data Usage Summary</h3>
+            <p><strong>What we collect:</strong> Aggregated coding patterns, anonymized behavioral metrics, statistical summaries</p>
+            <p><strong>What we don't collect:</strong> Actual code content, personal files, detailed keystrokes, private communications</p>
+            <p><strong>How it's used:</strong> Generate wellness insights, predict burnout risk, recommend interventions</p>
+            <p><strong>Who has access:</strong> Only the individual user and their designated team lead (if opted in)</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('📊 Data Structure', '').replace('🔗 API Endpoint', '').replace('✅ Example Output', '').replace('Copy', '').trim();
+            
+            navigator.clipboard.writeText(code).then(function() {
+                button.textContent = 'Copied!';
+                button.style.background = '#27ae60';
+                setTimeout(function() {
+                    button.textContent = 'Copy';
+                    button.style.background = '#3498db';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

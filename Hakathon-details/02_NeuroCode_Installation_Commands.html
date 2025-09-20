@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCode Installation Commands</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+            font-size: 1.4em;
+        }
+        
+        .phase-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #3498db;
+        }
+        
+        .command-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+            border-left: 4px solid #3498db;
+        }
+        
+        .command-block::before {
+            content: "💻 Terminal";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .command-title {
+            color: #3498db;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .step-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .step-header h3 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .checklist {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .checklist input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .checklist label {
+            margin-bottom: 10px;
+            display: block;
+            cursor: pointer;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .copy-button:hover {
+            background: #2980b9;
+        }
+        
+        .command-explanation {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+            border-left: 3px solid #17a2b8;
+        }
+        
+        .time-estimate {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 NeuroCode Installation Guide</h1>
+        
+        <div class="info-box">
+            <h3>📋 Prerequisites</h3>
+            <ul>
+                <li><strong>Cloud Account:</strong> AWS, GCP, or Azure account with admin access</li>
+                <li><strong>Local Tools:</strong> Docker, kubectl, helm, git</li>
+                <li><strong>Domain:</strong> Domain name for SSL certificates</li>
+                <li><strong>Budget:</strong> $500-2000/month for infrastructure</li>
+            </ul>
+        </div>
+
+        <h2>Phase 1: Infrastructure Setup</h2>
+        <div class="time-estimate">⏱️ Estimated Time: 4-6 hours</div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">1</span>
+                <h3>Install Required Tools</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install Docker (Ubuntu/Debian)</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+newgrp docker
+
+# Verify Docker installation
+docker --version
+docker run hello-world
+            </div>
+            
+            <div class="command-explanation">
+                <strong>What this does:</strong> Installs Docker Engine and adds your user to the docker group so you can run Docker commands without sudo.
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install kubectl (Kubernetes CLI)</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# Verify kubectl installation
+kubectl version --client
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install Helm (Package Manager for Kubernetes)</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Verify Helm installation
+helm version
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install eksctl (AWS EKS CLI)</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
+# Verify eksctl installation
+eksctl version
+            </div>
+        </div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">2</span>
+                <h3>AWS Cloud Setup</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Configure AWS CLI</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Install AWS CLI v2
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# Configure AWS credentials
+aws configure
+# Enter your AWS Access Key ID
+# Enter your AWS Secret Access Key  
+# Enter your default region (e.g., us-west-2)
+# Enter output format (json)
+
+# Verify AWS configuration
+aws sts get-caller-identity
+            </div>
+            
+            <div class="command-explanation">
+                <strong>What this does:</strong> Installs AWS CLI and configures your credentials. You'll need an AWS account with programmatic access enabled.
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Create VPC and Network Infrastructure</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create VPC
+VPC_ID=$(aws ec2 create-vpc \
+    --cidr-block 10.0.0.0/16 \
+    --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=neurocode-vpc}]' \
+    --query 'Vpc.VpcId' \
+    --output text)
+
+echo "Created VPC: $VPC_ID"
+
+# Create Internet Gateway
+IGW_ID=$(aws ec2 create-internet-gateway \
+    --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=neurocode-igw}]' \
+    --query 'InternetGateway.InternetGatewayId' \
+    --output text)
+
+# Attach Internet Gateway to VPC
+aws ec2 attach-internet-gateway \
+    --vpc-id $VPC_ID \
+    --internet-gateway-id $IGW_ID
+
+echo "Created and attached Internet Gateway: $IGW_ID"
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Create Subnets</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create Public Subnet 1
+SUBNET_1=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block 10.0.1.0/24 \
+    --availability-zone us-west-2a \
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=neurocode-public-1}]' \
+    --query 'Subnet.SubnetId' \
+    --output text)
+
+# Create Public Subnet 2
+SUBNET_2=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block 10.0.2.0/24 \
+    --availability-zone us-west-2b \
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=neurocode-public-2}]' \
+    --query 'Subnet.SubnetId' \
+    --output text)
+
+# Create Private Subnet 1
+SUBNET_3=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block 10.0.3.0/24 \
+    --availability-zone us-west-2a \
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=neurocode-private-1}]' \
+    --query 'Subnet.SubnetId' \
+    --output text)
+
+echo "Created Subnets: $SUBNET_1, $SUBNET_2, $SUBNET_3"
+            </div>
+        </div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">3</span>
+                <h3>Create EKS Kubernetes Cluster</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Create EKS Cluster with eksctl</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create cluster configuration file
+cat > neurocode-cluster.yaml << EOF
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: neurocode-cluster
+  region: us-west-2
+  version: "1.28"
+
+vpc:
+  id: "$VPC_ID"
+  subnets:
+    public:
+      us-west-2a: { id: "$SUBNET_1" }
+      us-west-2b: { id: "$SUBNET_2" }
+    private:
+      us-west-2a: { id: "$SUBNET_3" }
+
+nodeGroups:
+  - name: standard-workers
+    instanceType: m5.large
+    desiredCapacity: 3
+    minSize: 1
+    maxSize: 10
+    volumeSize: 50
+    ssh:
+      allow: true
+    labels:
+      role: worker
+    tags:
+      Environment: production
+      Project: neurocode
+
+  - name: ai-workers
+    instanceType: g4dn.xlarge
+    desiredCapacity: 2
+    minSize: 0
+    maxSize: 5
+    volumeSize: 100
+    labels:
+      role: ai-worker
+      gpu: nvidia-t4
+    taints:
+      - key: nvidia.com/gpu
+        value: "true"
+        effect: NoSchedule
+
+addons:
+  - name: vpc-cni
+  - name: coredns
+  - name: kube-proxy
+  - name: aws-ebs-csi-driver
+
+cloudWatch:
+  clusterLogging:
+    enable: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+EOF
+
+# Create the cluster (this takes 15-20 minutes)
+eksctl create cluster -f neurocode-cluster.yaml
+            </div>
+            
+            <div class="command-explanation">
+                <strong>What this does:</strong> Creates a production-ready EKS cluster with both CPU and GPU node groups. The GPU nodes will be used for AI model inference.
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ Important Notes:</h4>
+                <ul>
+                    <li>Cluster creation takes 15-20 minutes</li>
+                    <li>GPU instances (g4dn.xlarge) cost ~$0.526/hour each</li>
+                    <li>Make sure you have sufficient AWS service limits</li>
+                    <li>The cluster will cost approximately $200-400/month</li>
+                </ul>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Verify Cluster Creation</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Update kubeconfig
+aws eks update-kubeconfig --region us-west-2 --name neurocode-cluster
+
+# Verify cluster is running
+kubectl get nodes
+kubectl get pods --all-namespaces
+
+# Check cluster info
+kubectl cluster-info
+            </div>
+        </div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">4</span>
+                <h3>Install Service Mesh (Istio)</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install Istio Service Mesh</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Download and install Istio
+curl -L https://istio.io/downloadIstio | sh -
+cd istio-*
+sudo cp bin/istioctl /usr/local/bin/
+cd ..
+
+# Install Istio on the cluster
+istioctl install --set values.defaultRevision=default -y
+
+# Enable Istio injection for default namespace
+kubectl label namespace default istio-injection=enabled
+
+# Verify Istio installation
+kubectl get pods -n istio-system
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install Istio Addons (Monitoring)</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Install Kiali, Jaeger, Prometheus, Grafana
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/kiali.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/jaeger.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/prometheus.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/grafana.yaml
+
+# Wait for deployments to be ready
+kubectl wait --for=condition=available --timeout=600s deployment --all -n istio-system
+            </div>
+        </div>
+
+        <h2>Phase 2: Database Setup</h2>
+        <div class="time-estimate">⏱️ Estimated Time: 2-3 hours</div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">5</span>
+                <h3>Install PostgreSQL</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Add Bitnami Helm Repository</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+# Create namespace for databases
+kubectl create namespace databases
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install PostgreSQL with High Availability</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create PostgreSQL values file
+cat > postgresql-values.yaml << EOF
+auth:
+  postgresPassword: "NeuroCode2024!"
+  database: "neurocode"
+  
+architecture: replication
+primary:
+  persistence:
+    enabled: true
+    size: 100Gi
+    storageClass: gp3
+  resources:
+    requests:
+      memory: 2Gi
+      cpu: 1000m
+    limits:
+      memory: 4Gi
+      cpu: 2000m
+
+readReplicas:
+  replicaCount: 2
+  persistence:
+    enabled: true
+    size: 100Gi
+    storageClass: gp3
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 500m
+    limits:
+      memory: 2Gi
+      cpu: 1000m
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+EOF
+
+# Install PostgreSQL
+helm install postgresql bitnami/postgresql \
+  --namespace databases \
+  --values postgresql-values.yaml \
+  --wait
+
+# Verify PostgreSQL installation
+kubectl get pods -n databases
+kubectl get pvc -n databases
+            </div>
+        </div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">6</span>
+                <h3>Install TimescaleDB</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install TimescaleDB for Time Series Data</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Add TimescaleDB Helm repository
+helm repo add timescale https://charts.timescale.com/
+helm repo update
+
+# Create TimescaleDB values file
+cat > timescaledb-values.yaml << EOF
+secrets:
+  postgres:
+    password: "NeuroCode2024!"
+
+persistentVolumes:
+  data:
+    enabled: true
+    size: 200Gi
+    storageClass: gp3
+  wal:
+    enabled: true
+    size: 20Gi
+    storageClass: gp3
+
+resources:
+  requests:
+    memory: 4Gi
+    cpu: 2000m
+  limits:
+    memory: 8Gi
+    cpu: 4000m
+
+postgresql:
+  max_connections: 200
+  shared_buffers: 2GB
+  effective_cache_size: 6GB
+  work_mem: 10MB
+
+timescaledb:
+  max_background_workers: 16
+  
+backup:
+  enabled: true
+  schedule: "0 2 * * *"
+  s3:
+    bucket: "neurocode-backups"
+    region: "us-west-2"
+EOF
+
+# Install TimescaleDB
+helm install timescaledb timescale/timescaledb-single \
+  --namespace databases \
+  --values timescaledb-values.yaml \
+  --wait
+
+# Verify TimescaleDB installation
+kubectl get pods -n databases -l app=timescaledb
+            </div>
+        </div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">7</span>
+                <h3>Install Redis Cache</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install Redis Cluster</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create Redis values file
+cat > redis-values.yaml << EOF
+architecture: replication
+auth:
+  enabled: true
+  password: "NeuroCode2024!"
+
+master:
+  persistence:
+    enabled: true
+    size: 50Gi
+    storageClass: gp3
+  resources:
+    requests:
+      memory: 2Gi
+      cpu: 1000m
+    limits:
+      memory: 4Gi
+      cpu: 2000m
+
+replica:
+  replicaCount: 3
+  persistence:
+    enabled: true
+    size: 50Gi
+    storageClass: gp3
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 500m
+    limits:
+      memory: 2Gi
+      cpu: 1000m
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+EOF
+
+# Install Redis
+helm install redis bitnami/redis \
+  --namespace databases \
+  --values redis-values.yaml \
+  --wait
+
+# Verify Redis installation
+kubectl get pods -n databases -l app.kubernetes.io/name=redis
+            </div>
+        </div>
+
+        <h2>Phase 3: Message Queue Setup</h2>
+        <div class="time-estimate">⏱️ Estimated Time: 1-2 hours</div>
+        
+        <div class="phase-container">
+            <div class="step-header">
+                <span class="step-number">8</span>
+                <h3>Install Apache Kafka</h3>
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Install Strimzi Kafka Operator</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create Kafka namespace
+kubectl create namespace kafka
+
+# Install Strimzi Kafka Operator
+kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
+
+# Wait for operator to be ready
+kubectl wait --for=condition=Ready pod -l name=strimzi-cluster-operator -n kafka --timeout=300s
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Create Kafka Cluster</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create Kafka cluster configuration
+cat > kafka-cluster.yaml << EOF
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: neurocode-cluster
+  namespace: kafka
+spec:
+  kafka:
+    version: 3.5.0
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+        authentication:
+          type: tls
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+      inter.broker.protocol.version: "3.5"
+      log.retention.hours: 168
+      log.segment.bytes: 1073741824
+      log.retention.check.interval.ms: 300000
+      num.partitions: 12
+    storage:
+      type: persistent-claim
+      size: 100Gi
+      class: gp3
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: 1000m
+      limits:
+        memory: 4Gi
+        cpu: 2000m
+    jvmOptions:
+      -Xms: 1g
+      -Xmx: 2g
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 10Gi
+      class: gp3
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 500m
+      limits:
+        memory: 2Gi
+        cpu: 1000m
+    jvmOptions:
+      -Xms: 512m
+      -Xmx: 1g
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: zookeeper-metrics-config.yml
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+EOF
+
+# Apply Kafka cluster configuration
+kubectl apply -f kafka-cluster.yaml
+
+# Wait for Kafka cluster to be ready (this takes 5-10 minutes)
+kubectl wait kafka/neurocode-cluster --for=condition=Ready --timeout=600s -n kafka
+            </div>
+            
+            <div class="command-block">
+                <div class="command-title"># Create Kafka Topics</div>
+                <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+# Create topics for NeuroCode
+cat > kafka-topics.yaml << EOF
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: code-events
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: neurocode-cluster
+spec:
+  partitions: 12
+  replicas: 3
+  config:
+    retention.ms: 604800000  # 7 days
+    segment.ms: 3600000      # 1 hour
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: psychological-insights
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: neurocode-cluster
+spec:
+  partitions: 6
+  replicas: 3
+  config:
+    retention.ms: 2592000000  # 30 days
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: interventions
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: neurocode-cluster
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 1209600000  # 14 days
+EOF
+
+# Apply topic configurations
+kubectl apply -f kafka-topics.yaml
+
+# Verify topics are created
+kubectl get kafkatopics -n kafka
+            </div>
+        </div>
+
+        <div class="success-box">
+            <h3>✅ Infrastructure Setup Complete!</h3>
+            <p>You now have a fully functional Kubernetes cluster with:</p>
+            <ul>
+                <li>EKS cluster with CPU and GPU nodes</li>
+                <li>Istio service mesh for traffic management</li>
+                <li>PostgreSQL for relational data</li>
+                <li>TimescaleDB for time series data</li>
+                <li>Redis for caching</li>
+                <li>Kafka for message streaming</li>
+            </ul>
+        </div>
+        
+        <div class="checklist">
+            <h3>📋 Verification Checklist</h3>
+            <label><input type="checkbox"> All Kubernetes nodes are Ready</label>
+            <label><input type="checkbox"> Istio system pods are Running</label>
+            <label><input type="checkbox"> PostgreSQL is accessible</label>
+            <label><input type="checkbox"> TimescaleDB is running</label>
+            <label><input type="checkbox"> Redis cluster is healthy</label>
+            <label><input type="checkbox"> Kafka cluster is Ready</label>
+            <label><input type="checkbox"> All topics are created</label>
+            <label><input type="checkbox"> Monitoring stack is deployed</label>
+        </div>
+        
+        <div class="info-box">
+            <h3>🔗 Next Steps</h3>
+            <p>With the infrastructure ready, you can now proceed to:</p>
+            <ol>
+                <li>Deploy NeuroCode application services</li>
+                <li>Configure AI model endpoints</li>
+                <li>Set up monitoring and alerting</li>
+                <li>Install IDE plugins</li>
+                <li>Configure SSL certificates</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('💻 Terminal', '').replace('Copy', '').trim();
+            
+            navigator.clipboard.writeText(code).then(function() {
+                button.textContent = 'Copied!';
+                button.style.background = '#27ae60';
+                setTimeout(function() {
+                    button.textContent = 'Copy';
+                    button.style.background = '#3498db';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

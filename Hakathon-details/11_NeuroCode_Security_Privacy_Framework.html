@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCode Security & Privacy Framework</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        .security-layer {
+            background: linear-gradient(135deg, #ffebee 0%, #f8bbd9 100%);
+            border: 2px solid #e91e63;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .layer-title {
+            color: #ad1457;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .security-component {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #e91e63;
+        }
+        
+        .component-title {
+            font-weight: bold;
+            color: #ad1457;
+            margin-bottom: 10px;
+        }
+        
+        .privacy-principle {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .principle-title {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .compliance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .compliance-table th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .compliance-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .compliance-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .status-compliant { color: #28a745; font-weight: bold; }
+        .status-partial { color: #ffc107; font-weight: bold; }
+        .status-planned { color: #6c757d; font-weight: bold; }
+        
+        .threat-model {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .threat-title {
+            color: #e65100;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .threat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .threat-severity {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .critical { background: #dc3545; color: white; }
+        .high { background: #fd7e14; color: white; }
+        .medium { background: #ffc107; color: #333; }
+        .low { background: #28a745; color: white; }
+        
+        .code-example {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .audit-checklist {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 NeuroCode Security & Privacy Framework</h1>
+        
+        <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 25px; border-radius: 15px; margin: 30px 0;">
+            <h3 style="margin-top: 0; color: #856404;">🛡️ Security-First Architecture</h3>
+            <p style="color: #856404;">NeuroCode implements a comprehensive security and privacy framework designed to protect sensitive developer data while enabling powerful psychological insights. This document outlines our multi-layered security approach, privacy-by-design principles, and regulatory compliance strategy.</p>
+        </div>
+
+        <h2>1. Multi-Layer Security Architecture</h2>
+        
+        <div class="security-layer">
+            <div class="layer-title">🌐 Perimeter Security Layer</div>
+            <div class="security-grid">
+                <div class="security-component">
+                    <div class="component-title">Web Application Firewall (WAF)</div>
+                    <ul>
+                        <li>AWS WAF with custom rules</li>
+                        <li>OWASP Top 10 protection</li>
+                        <li>Rate limiting: 1000 req/min per IP</li>
+                        <li>Geo-blocking for suspicious regions</li>
+                        <li>SQL injection and XSS prevention</li>
+                    </ul>
+                </div>
+                
+                <div class="security-component">
+                    <div class="component-title">DDoS Protection</div>
+                    <ul>
+                        <li>AWS Shield Advanced</li>
+                        <li>CloudFlare DDoS mitigation</li>
+                        <li>Auto-scaling during attacks</li>
+                        <li>Traffic pattern analysis</li>
+                        <li>24/7 monitoring and response</li>
+                    </ul>
+                </div>
+                
+                <div class="security-component">
+                    <div class="component-title">SSL/TLS Termination</div>
+                    <ul>
+                        <li>TLS 1.3 encryption</li>
+                        <li>Perfect Forward Secrecy</li>
+                        <li>Certificate pinning</li>
+                        <li>HSTS headers</li>
+                        <li>Automated certificate renewal</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="security-layer">
+            <div class="layer-title">🔐 Application Security Layer</div>
+            <div class="security-grid">
+                <div class="security-component">
+                    <div class="component-title">Authentication & Authorization</div>
+                    <ul>
+                        <li>OAuth 2.0 with PKCE</li>
+                        <li>JWT tokens with short expiry</li>
+                        <li>Multi-factor authentication</li>
+                        <li>Role-based access control (RBAC)</li>
+                        <li>API key management</li>
+                    </ul>
+                </div>
+                
+                <div class="security-component">
+                    <div class="component-title">Input Validation</div>
+                    <ul>
+                        <li>Schema validation for all inputs</li>
+                        <li>Sanitization of user data</li>
+                        <li>Content Security Policy (CSP)</li>
+                        <li>CSRF protection</li>
+                        <li>Parameter tampering prevention</li>
+                    </ul>
+                </div>
+                
+                <div class="security-component">
+                    <div class="component-title">Session Management</div>
+                    <ul>
+                        <li>Secure session tokens</li>
+                        <li>Session timeout (30 minutes)</li>
+                        <li>Concurrent session limits</li>
+                        <li>Session invalidation on logout</li>
+                        <li>Device fingerprinting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="security-layer">
+            <div class="layer-title">💾 Data Security Layer</div>
+            <div class="security-grid">
+                <div class="security-component">
+                    <div class="component-title">Encryption at Rest</div>
+                    <ul>
+                        <li>AES-256 encryption</li>
+                        <li>Database-level encryption</li>
+                        <li>Encrypted backups</li>
+                        <li>Key rotation every 90 days</li>
+                        <li>Hardware Security Modules (HSM)</li>
+                    </ul>
+                </div>
+                
+                <div class="security-component">
+                    <div class="component-title">Encryption in Transit</div>
+                    <ul>
+                        <li>TLS 1.3 for all communications</li>
+                        <li>mTLS for service-to-service</li>
+                        <li>VPN for admin access</li>
+                        <li>Encrypted message queues</li>
+                        <li>Secure API endpoints</li>
+                    </ul>
+                </div>
+                
+                <div class="security-component">
+                    <div class="component-title">Key Management</div>
+                    <ul>
+                        <li>AWS KMS integration</li>
+                        <li>Separate keys per environment</li>
+                        <li>Automated key rotation</li>
+                        <li>Key escrow for recovery</li>
+                        <li>Audit trail for key usage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>2. Privacy-by-Design Framework</h2>
+        
+        <div class="privacy-principle">
+            <div class="principle-title">🎯 Data Minimization</div>
+            <ul>
+                <li><strong>Collection Limitation:</strong> Only collect data necessary for psychological insights</li>
+                <li><strong>Purpose Binding:</strong> Data used only for stated wellness purposes</li>
+                <li><strong>Retention Limits:</strong> Automatic deletion after 90 days</li>
+                <li><strong>Granular Controls:</strong> Users can disable specific data collection</li>
+            </ul>
+        </div>
+        
+        <div class="privacy-principle">
+            <div class="principle-title">🔒 Data Anonymization</div>
+            <div class="code-example">
+# Privacy-Preserving Data Processing
+class PrivacyEngine:
+    def __init__(self):
+        self.anonymizer = DataAnonymizer()
+        self.differential_privacy = DifferentialPrivacy(epsilon=1.0)
+        
+    def process_developer_data(self, raw_data):
+        # Step 1: Remove direct identifiers
+        anonymized = self.anonymizer.remove_pii(raw_data)
+        
+        # Step 2: Apply k-anonymity (k=5)
+        k_anonymous = self.anonymizer.k_anonymize(anonymized, k=5)
+        
+        # Step 3: Add differential privacy noise
+        private_data = self.differential_privacy.add_noise(k_anonymous)
+        
+        # Step 4: Aggregate to prevent re-identification
+        aggregated = self.aggregate_by_time_window(private_data, window='5min')
+        
+        return aggregated
+        
+    def remove_pii(self, data):
+        # Remove or hash personal identifiers
+        data['user_id'] = self.hash_user_id(data['user_id'])
+        data.pop('email', None)
+        data.pop('name', None)
+        data.pop('ip_address', None)
+        
+        # Generalize location data
+        if 'timezone' in data:
+            data['timezone'] = self.generalize_timezone(data['timezone'])
+            
+        return data
+            </div>
+        </div>
+        
+        <div class="privacy-principle">
+            <div class="principle-title">👤 User Control & Transparency</div>
+            <ul>
+                <li><strong>Granular Consent:</strong> Separate consent for each data type</li>
+                <li><strong>Data Dashboard:</strong> Users can view all collected data</li>
+                <li><strong>Export Rights:</strong> Complete data export in JSON format</li>
+                <li><strong>Deletion Rights:</strong> Immediate data deletion on request</li>
+                <li><strong>Opt-out Options:</strong> Easy withdrawal of consent</li>
+            </ul>
+        </div>
+
+        <h2>3. Regulatory Compliance</h2>
+        
+        <table class="compliance-table">
+            <thead>
+                <tr>
+                    <th>Regulation</th>
+                    <th>Scope</th>
+                    <th>Key Requirements</th>
+                    <th>Compliance Status</th>
+                    <th>Implementation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>GDPR</strong></td>
+                    <td>EU/EEA</td>
+                    <td>Consent, Data Protection, Right to Erasure</td>
+                    <td><span class="status-compliant">Compliant</span></td>
+                    <td>Privacy-by-design, DPO appointed</td>
+                </tr>
+                <tr>
+                    <td><strong>CCPA</strong></td>
+                    <td>California</td>
+                    <td>Consumer Rights, Data Transparency</td>
+                    <td><span class="status-compliant">Compliant</span></td>
+                    <td>Consumer portal, opt-out mechanisms</td>
+                </tr>
+                <tr>
+                    <td><strong>SOC 2 Type II</strong></td>
+                    <td>Global</td>
+                    <td>Security Controls, Audit Trail</td>
+                    <td><span class="status-compliant">Certified</span></td>
+                    <td>Annual audit, continuous monitoring</td>
+                </tr>
+                <tr>
+                    <td><strong>ISO 27001</strong></td>
+                    <td>Global</td>
+                    <td>Information Security Management</td>
+                    <td><span class="status-partial">In Progress</span></td>
+                    <td>ISMS implementation, Q2 2025</td>
+                </tr>
+                <tr>
+                    <td><strong>HIPAA</strong></td>
+                    <td>US Healthcare</td>
+                    <td>Protected Health Information</td>
+                    <td><span class="status-planned">Optional</span></td>
+                    <td>Healthcare module only</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>4. Threat Model & Risk Assessment</h2>
+        
+        <div class="threat-model">
+            <div class="threat-title">🎯 Primary Threat Vectors</div>
+            
+            <div class="threat-item">
+                <div class="threat-severity critical">CRITICAL</div>
+                <strong>Data Breach via API Exploitation</strong>
+                <p>Unauthorized access to developer psychological data through API vulnerabilities.</p>
+                <p><strong>Mitigation:</strong> API rate limiting, input validation, OAuth 2.0, regular penetration testing</p>
+            </div>
+            
+            <div class="threat-item">
+                <div class="threat-severity high">HIGH</div>
+                <strong>Insider Threat</strong>
+                <p>Malicious or negligent employees accessing sensitive developer data.</p>
+                <p><strong>Mitigation:</strong> Zero-trust architecture, role-based access, audit logging, background checks</p>
+            </div>
+            
+            <div class="threat-item">
+                <div class="threat-severity high">HIGH</div>
+                <strong>AI Model Poisoning</strong>
+                <p>Adversarial inputs designed to manipulate psychological assessments.</p>
+                <p><strong>Mitigation:</strong> Input validation, anomaly detection, model ensemble, human oversight</p>
+            </div>
+            
+            <div class="threat-item">
+                <div class="threat-severity medium">MEDIUM</div>
+                <strong>Supply Chain Attack</strong>
+                <p>Compromise through third-party dependencies or services.</p>
+                <p><strong>Mitigation:</strong> Dependency scanning, vendor security assessments, isolated environments</p>
+            </div>
+            
+            <div class="threat-item">
+                <div class="threat-severity medium">MEDIUM</div>
+                <strong>Social Engineering</strong>
+                <p>Manipulation of employees to gain unauthorized access.</p>
+                <p><strong>Mitigation:</strong> Security awareness training, MFA, incident response procedures</p>
+            </div>
+        </div>
+
+        <h2>5. Security Monitoring & Incident Response</h2>
+        
+        <div class="code-example">
+# Security Monitoring System
+class SecurityMonitor:
+    def __init__(self):
+        self.siem = SIEMIntegration()
+        self.threat_intel = ThreatIntelligence()
+        self.incident_response = IncidentResponse()
+        
+    def monitor_security_events(self):
+        # Real-time security event monitoring
+        events = [
+            'failed_login_attempts',
+            'unusual_api_patterns',
+            'data_access_anomalies',
+            'privilege_escalation',
+            'suspicious_network_traffic'
+        ]
+        
+        for event_type in events:
+            self.analyze_security_event(event_type)
+            
+    def analyze_security_event(self, event_type):
+        # Machine learning-based anomaly detection
+        baseline = self.get_baseline_behavior(event_type)
+        current = self.get_current_metrics(event_type)
+        
+        anomaly_score = self.calculate_anomaly_score(baseline, current)
+        
+        if anomaly_score > 0.8:
+            self.trigger_incident_response(event_type, anomaly_score)
+            
+    def trigger_incident_response(self, event_type, severity):
+        # Automated incident response
+        incident = {
+            'type': event_type,
+            'severity': severity,
+            'timestamp': datetime.utcnow(),
+            'affected_systems': self.identify_affected_systems(event_type)
+        }
+        
+        # Immediate containment
+        if severity > 0.9:
+            self.emergency_containment(incident)
+            
+        # Alert security team
+        self.alert_security_team(incident)
+        
+        # Start investigation
+        self.start_investigation(incident)
+        </div>
+
+        <h2>6. Security Audit Checklist</h2>
+        
+        <div class="audit-checklist">
+            <h4>🔍 Monthly Security Audit</h4>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit1">
+                <label for="audit1">Review access logs for anomalous patterns</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit2">
+                <label for="audit2">Verify encryption key rotation compliance</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit3">
+                <label for="audit3">Test backup and recovery procedures</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit4">
+                <label for="audit4">Update threat intelligence feeds</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit5">
+                <label for="audit5">Review and update security policies</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit6">
+                <label for="audit6">Conduct penetration testing</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit7">
+                <label for="audit7">Validate compliance with regulations</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit8">
+                <label for="audit8">Review third-party security assessments</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit9">
+                <label for="audit9">Test incident response procedures</label>
+            </div>
+            
+            <div class="checklist-item">
+                <input type="checkbox" id="audit10">
+                <label for="audit10">Update security awareness training</label>
+            </div>
+        </div>
+        
+        <div style="background: #d4edda; border: 2px solid #28a745; padding: 25px; border-radius: 15px; margin: 30px 0;">
+            <h3 style="margin-top: 0; color: #155724;">🛡️ Security Framework Complete</h3>
+            <p style="color: #155724; margin-bottom: 0;">
+                <strong>Comprehensive security and privacy framework implemented.</strong> 
+                NeuroCode employs defense-in-depth security, privacy-by-design principles, and full regulatory compliance to protect sensitive developer data while enabling powerful psychological insights.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

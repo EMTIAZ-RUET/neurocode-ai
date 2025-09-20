@@ -42,7 +42,7 @@ const Logo = styled(Link)`
 const NavMenu = styled.ul`
   display: flex;
   list-style: none;
-  gap: ${props => props.theme.spacing.lg};
+  gap: ${props => props.theme.spacing.sm};
   
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     display: ${props => props.isOpen ? 'flex' : 'none'};
@@ -123,10 +123,11 @@ const Navbar = () => {
   const location = useLocation();
 
   const navItems = [
-    { path: '/system-design', label: '🏗️ System Design Document', icon: 'fas fa-file-alt', highlight: true },
+    { path: '/system-design', label: '🏗️ System Design', icon: 'fas fa-project-diagram', highlight: true },
     { path: '/dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
     { path: '/analysis', label: 'Analysis', icon: 'fas fa-chart-bar' },
     { path: '/insights', label: 'Insights', icon: 'fas fa-lightbulb' },
+    { path: '/ui-ux-design', label: 'UI/UX Design', icon: 'fas fa-palette' },
     { path: '/settings', label: 'Settings', icon: 'fas fa-cog' }
   ];
 

@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCode User Interface Design</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+            font-size: 1.4em;
+        }
+        
+        .interface-mockup {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .mockup-title {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .widget {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .widget-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .widget-value {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .status-good { color: #27ae60; }
+        .status-warning { color: #f39c12; }
+        .status-danger { color: #e74c3c; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-good { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+        .progress-warning { background: linear-gradient(90deg, #f39c12, #f1c40f); }
+        .progress-danger { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        
+        .chart-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin: 15px 0;
+        }
+        
+        .notification-panel {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .notification-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+        
+        .ide-mockup {
+            background: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+        
+        .ide-header {
+            background: #34495e;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .ide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .ide-tab {
+            background: #34495e;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        
+        .ide-tab.active {
+            background: #3498db;
+        }
+        
+        .code-line {
+            margin: 5px 0;
+            padding: 2px 0;
+        }
+        
+        .line-number {
+            color: #7f8c8d;
+            margin-right: 15px;
+            width: 30px;
+            display: inline-block;
+        }
+        
+        .neurocode-widget {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: rgba(52, 73, 94, 0.9);
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 250px;
+        }
+        
+        .wellness-indicator {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .dot-green { background: #27ae60; }
+        .dot-yellow { background: #f39c12; }
+        .dot-red { background: #e74c3c; }
+        
+        .team-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid #3498db;
+        }
+        
+        .member-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #9b59b6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .member-info h4 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        
+        .member-info p {
+            margin: 5px 0 0 0;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+        }
+        
+        .mobile-mockup {
+            width: 300px;
+            height: 600px;
+            background: #2c3e50;
+            border-radius: 25px;
+            padding: 20px;
+            margin: 20px auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .mobile-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .mobile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            margin-bottom: 20px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 NeuroCode User Interface Design</h1>
+        
+        <h2>1. Developer Personal Dashboard</h2>
+        
+        <div class="interface-mockup">
+            <div class="mockup-title">Personal Wellness Dashboard</div>
+            
+            <div class="dashboard-grid">
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🧠 Current Wellness Score</span>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">Last updated: 2 min ago</span>
+                    </div>
+                    <div class="widget-value status-good">78%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-good" style="width: 78%;"></div>
+                    </div>
+                    <p style="text-align: center; color: #27ae60; margin: 10px 0;">Healthy Range</p>
+                    <p style="font-size: 0.9em; color: #7f8c8d;">↑ 5% improvement from last week</p>
+                </div>
+                
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">⚡ Stress Level</span>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">Real-time</span>
+                    </div>
+                    <div class="widget-value status-warning">42%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-warning" style="width: 42%;"></div>
+                    </div>
+                    <p style="text-align: center; color: #f39c12; margin: 10px 0;">Moderate</p>
+                    <p style="font-size: 0.9em; color: #7f8c8d;">Consider taking a break in 30 minutes</p>
+                </div>
+                
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🔥 Burnout Risk</span>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">Weekly trend</span>
+                    </div>
+                    <div class="widget-value status-good">18%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-good" style="width: 18%;"></div>
+                    </div>
+                    <p style="text-align: center; color: #27ae60; margin: 10px 0;">Low Risk</p>
+                    <p style="font-size: 0.9em; color: #7f8c8d;">Maintaining healthy work patterns</p>
+                </div>
+                
+                <div class="widget">
+                    <div class="widget-header">
+                        <span class="widget-title">🌊 Flow State</span>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">Today</span>
+                    </div>
+                    <div class="widget-value status-good">85%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-good" style="width: 85%;"></div>
+                    </div>
+                    <p style="text-align: center; color: #27ae60; margin: 10px 0;">Excellent Focus</p>
+                    <p style="font-size: 0.9em; color: #7f8c8d;">3.2 hours of deep work detected</p>
+                </div>
+            </div>
+            
+            <div class="widget" style="margin-top: 20px;">
+                <div class="widget-header">
+                    <span class="widget-title">📈 Productivity Trends (Last 7 Days)</span>
+                </div>
+                <div class="chart-placeholder">
+                    <svg width="100%" height="180" viewBox="0 0 400 180">
+                        <!-- Chart background -->
+                        <rect width="400" height="180" fill="#f8f9fa"/>
+                        
+                        <!-- Grid lines -->
+                        <line x1="50" y1="20" x2="50" y2="160" stroke="#dee2e6" stroke-width="1"/>
+                        <line x1="50" y1="160" x2="380" y2="160" stroke="#dee2e6" stroke-width="1"/>
+                        
+                        <!-- Productivity line -->
+                        <polyline points="50,120 100,100 150,80 200,90 250,70 300,60 350,65" 
+                                 fill="none" stroke="#3498db" stroke-width="3"/>
+                        
+                        <!-- Stress line -->
+                        <polyline points="50,140 100,130 150,110 200,120 250,100 300,95 350,105" 
+                                 fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5"/>
+                        
+                        <!-- Data points -->
+                        <circle cx="350" cy="65" r="4" fill="#3498db"/>
+                        <circle cx="350" cy="105" r="3" fill="#e74c3c"/>
+                        
+                        <!-- Labels -->
+                        <text x="60" y="175" font-size="12" fill="#7f8c8d">Mon</text>
+                        <text x="140" y="175" font-size="12" fill="#7f8c8d">Wed</text>
+                        <text x="220" y="175" font-size="12" fill="#7f8c8d">Fri</text>
+                        <text x="300" y="175" font-size="12" fill="#7f8c8d">Sun</text>
+                        
+                        <!-- Legend -->
+                        <line x1="280" y1="30" x2="300" y2="30" stroke="#3498db" stroke-width="3"/>
+                        <text x="305" y="35" font-size="12" fill="#2c3e50">Productivity</text>
+                        <line x1="280" y1="45" x2="300" y2="45" stroke="#e74c3c" stroke-width="2" stroke-dasharray="3,3"/>
+                        <text x="305" y="50" font-size="12" fill="#2c3e50">Stress</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="notification-panel">
+                <h4 style="margin-top: 0; color: #856404;">🔔 AI Recommendations</h4>
+                
+                <div class="notification-item">
+                    <span class="notification-icon">✅</span>
+                    <div>
+                        <strong>Take a 15-minute break</strong><br>
+                        <small>Your stress level has increased 15% in the last hour. A short break can help reset your focus.</small>
+                    </div>
+                </div>
+                
+                <div class="notification-item">
+                    <span class="notification-icon">💡</span>
+                    <div>
+                        <strong>Optimal coding time detected</strong><br>
+                        <small>You're most productive between 9-11 AM. Consider scheduling complex tasks during this window.</small>
+                    </div>
+                </div>
+                
+                <div class="notification-item">
+                    <span class="notification-icon">🎯</span>
+                    <div>
+                        <strong>Flow state opportunity</strong><br>
+                        <small>Block your calendar for the next 90 minutes to maintain deep focus on the current task.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>2. IDE Integration (VS Code Plugin)</h2>
+        
+        <div class="interface-mockup">
+            <div class="mockup-title">VS Code with NeuroCode Extension</div>
+            
+            <div class="ide-mockup" style="position: relative;">
+                <div class="ide-header">
+                    <span>📁 neurocode-project</span>
+                    <span style="font-size: 0.8em;">NeuroCode Active</span>
+                </div>
+                
+                <div class="ide-tabs">
+                    <div class="ide-tab active">main.py</div>
+                    <div class="ide-tab">utils.py</div>
+                    <div class="ide-tab">test_main.py</div>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <div class="code-line">
+                        <span class="line-number">1</span>
+                        <span style="color: #f39c12;">import</span> <span style="color: #e74c3c;">pandas</span> <span style="color: #f39c12;">as</span> <span style="color: #e74c3c;">pd</span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">2</span>
+                        <span style="color: #f39c12;">import</span> <span style="color: #e74c3c;">numpy</span> <span style="color: #f39c12;">as</span> <span style="color: #e74c3c;">np</span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">3</span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">4</span>
+                        <span style="color: #f39c12;">def</span> <span style="color: #3498db;">analyze_data</span>(<span style="color: #e74c3c;">data</span>):
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">5</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #95a5a6;"># Complex data analysis function</span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">6</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f39c12;">if</span> <span style="color: #e74c3c;">data</span> <span style="color: #f39c12;">is</span> <span style="color: #f39c12;">None</span>:
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">7</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f39c12;">return</span> <span style="color: #f39c12;">None</span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">8</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f39c12;">return</span> <span style="color: #e74c3c;">data</span>.<span style="color: #3498db;">describe</span>()
+                    </div>
+                </div>
+                
+                <div class="neurocode-widget">
+                    <h4 style="margin-top: 0; color: #3498db;">🧠 NeuroCode Insights</h4>
+                    
+                    <div class="wellness-indicator">
+                        <div class="indicator-dot dot-green"></div>
+                        <span>Wellness: Good (78%)</span>
+                    </div>
+                    
+                    <div class="wellness-indicator">
+                        <div class="indicator-dot dot-yellow"></div>
+                        <span>Complexity: Moderate</span>
+                    </div>
+                    
+                    <div class="wellness-indicator">
+                        <div class="indicator-dot dot-green"></div>
+                        <span>Focus: High</span>
+                    </div>
+                    
+                    <hr style="border-color: #7f8c8d; margin: 15px 0;">
+                    
+                    <div style="font-size: 0.9em;">
+                        <p><strong>💡 Suggestion:</strong></p>
+                        <p style="margin: 5px 0;">Consider adding error handling for edge cases in line 6.</p>
+                        
+                        <p><strong>⏰ Break Reminder:</strong></p>
+                        <p style="margin: 5px 0;">You've been coding for 45 minutes. Take a 5-minute break?</p>
+                        
+                        <button style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+                            Remind me in 15 min
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>3. Team Manager Dashboard</h2>
+        
+        <div class="interface-mockup">
+            <div class="mockup-title">Team Wellness Overview</div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h3 style="margin: 0;">Development Team Alpha</h3>
+                <div style="display: flex; gap: 15px;">
+                    <span style="background: #27ae60; color: white; padding: 5px 15px; border-radius: 15px; font-size: 0.9em;">
+                        ✅ 6 Healthy
+                    </span>
+                    <span style="background: #f39c12; color: white; padding: 5px 15px; border-radius: 15px; font-size: 0.9em;">
+                        ⚠️ 2 At Risk
+                    </span>
+                    <span style="background: #e74c3c; color: white; padding: 5px 15px; border-radius: 15px; font-size: 0.9em;">
+                        🚨 1 Critical
+                    </span>
+                </div>
+            </div>
+            
+            <div class="team-dashboard">
+                <div class="team-member" style="border-top-color: #27ae60;">
+                    <div class="member-header">
+                        <div class="member-avatar">JS</div>
+                        <div class="member-info">
+                            <h4>John Smith</h4>
+                            <p>Senior Developer</p>
+                        </div>
+                        <div style="color: #27ae60; font-weight: bold;">Healthy</div>
+                    </div>
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Wellness Score</span>
+                        <span class="metric-value status-good">82%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Stress Level</span>
+                        <span class="metric-value status-good">28%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Burnout Risk</span>
+                        <span class="metric-value status-good">15%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Productivity</span>
+                        <span class="metric-value status-good">↑ 12%</span>
+                    </div>
+                </div>
+                
+                <div class="team-member" style="border-top-color: #f39c12;">
+                    <div class="member-header">
+                        <div class="member-avatar">EM</div>
+                        <div class="member-info">
+                            <h4>Emily Martinez</h4>
+                            <p>Full Stack Developer</p>
+                        </div>
+                        <div style="color: #f39c12; font-weight: bold;">At Risk</div>
+                    </div>
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Wellness Score</span>
+                        <span class="metric-value status-warning">58%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Stress Level</span>
+                        <span class="metric-value status-warning">72%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Burnout Risk</span>
+                        <span class="metric-value status-warning">45%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Productivity</span>
+                        <span class="metric-value status-warning">↓ 8%</span>
+                    </div>
+                </div>
+                
+                <div class="team-member" style="border-top-color: #e74c3c;">
+                    <div class="member-header">
+                        <div class="member-avatar">DK</div>
+                        <div class="member-info">
+                            <h4>David Kim</h4>
+                            <p>Backend Developer</p>
+                        </div>
+                        <div style="color: #e74c3c; font-weight: bold;">Critical</div>
+                    </div>
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Wellness Score</span>
+                        <span class="metric-value status-danger">32%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Stress Level</span>
+                        <span class="metric-value status-danger">89%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Burnout Risk</span>
+                        <span class="metric-value status-danger">78%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Productivity</span>
+                        <span class="metric-value status-danger">↓ 25%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notification-panel" style="background: #f8d7da; border-color: #dc3545;">
+                <h4 style="margin-top: 0; color: #721c24;">🚨 Urgent Actions Required</h4>
+                
+                <div class="notification-item" style="border-left-color: #dc3545;">
+                    <span class="notification-icon">⚠️</span>
+                    <div>
+                        <strong>David Kim - Immediate Intervention Needed</strong><br>
+                        <small>High burnout risk detected. Recommend immediate 1:1 meeting and workload adjustment.</small>
+                    </div>
+                </div>
+                
+                <div class="notification-item" style="border-left-color: #ffc107;">
+                    <span class="notification-icon">📞</span>
+                    <div>
+                        <strong>Emily Martinez - Check-in Recommended</strong><br>
+                        <small>Stress levels increasing over past 3 days. Consider redistributing tasks or offering support.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>4. Mobile App Interface</h2>
+        
+        <div class="interface-mockup">
+            <div class="mockup-title">NeuroCode Mobile App</div>
+            
+            <div class="mobile-mockup">
+                <div class="mobile-screen">
+                    <div class="mobile-header">
+                        <h3 style="margin: 0; color: #2c3e50;">NeuroCode</h3>
+                        <span style="color: #27ae60;">●</span>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#27ae60 0deg 280deg, #ecf0f1 280deg 360deg); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: #27ae60;">78%</div>
+                                <div style="font-size: 0.8em; color: #7f8c8d;">Wellness</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 1.2em; font-weight: bold; color: #f39c12;">42%</div>
+                            <div style="font-size: 0.9em; color: #7f8c8d;">Stress</div>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 1.2em; font-weight: bold; color: #27ae60;">85%</div>
+                            <div style="font-size: 0.9em; color: #7f8c8d;">Focus</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="margin: 0 0 10px 0; color: #856404;">💡 Today's Insight</h4>
+                        <p style="margin: 0; font-size: 0.9em; color: #856404;">
+                            Your productivity peaks at 10 AM. Consider scheduling important tasks during this time.
+                        </p>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">Quick Actions</h4>
+                        
+                        <button style="width: 100%; background: #3498db; color: white; border: none; padding: 15px; border-radius: 10px; margin-bottom: 10px; font-size: 1em;">
+                            🧘 Start Break Timer
+                        </button>
+                        
+                        <button style="width: 100%; background: #27ae60; color: white; border: none; padding: 15px; border-radius: 10px; margin-bottom: 10px; font-size: 1em;">
+                            🎯 Enter Focus Mode
+                        </button>
+                        
+                        <button style="width: 100%; background: #f39c12; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1em;">
+                            📊 View Detailed Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>5. Data Visualization Examples</h2>
+        
+        <div class="interface-mockup">
+            <div class="mockup-title">Advanced Analytics Dashboard</div>
+            
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                <div>
+                    <h4>Psychological State Timeline</h4>
+                    <div class="chart-placeholder" style="height: 300px;">
+                        <svg width="100%" height="280" viewBox="0 0 500 280">
+                            <!-- Background -->
+                            <rect width="500" height="280" fill="#f8f9fa"/>
+                            
+                            <!-- Grid -->
+                            <defs>
+                                <pattern id="grid" width="50" height="40" patternUnits="userSpaceOnUse">
+                                    <path d="M 50 0 L 0 0 0 40" fill="none" stroke="#dee2e6" stroke-width="1"/>
+                                </pattern>
+                            </defs>
+                            <rect width="500" height="280" fill="url(#grid)"/>
+                            
+                            <!-- Stress Level Area -->
+                            <path d="M 50 200 Q 150 180 250 160 T 450 140 L 450 240 L 50 240 Z" 
+                                  fill="#e74c3c" opacity="0.3"/>
+                            
+                            <!-- Flow State Area -->
+                            <path d="M 50 140 Q 150 120 250 100 T 450 80 L 450 140 Q 350 120 250 100 Q 150 120 50 140 Z" 
+                                  fill="#27ae60" opacity="0.3"/>
+                            
+                            <!-- Burnout Risk Line -->
+                            <path d="M 50 220 Q 150 210 250 200 T 450 190" 
+                                  fill="none" stroke="#c0392b" stroke-width="3" stroke-dasharray="5,5"/>
+                            
+                            <!-- Time labels -->
+                            <text x="50" y="270" font-size="12" fill="#7f8c8d">9 AM</text>
+                            <text x="150" y="270" font-size="12" fill="#7f8c8d">12 PM</text>
+                            <text x="250" y="270" font-size="12" fill="#7f8c8d">3 PM</text>
+                            <text x="350" y="270" font-size="12" fill="#7f8c8d">6 PM</text>
+                            <text x="450" y="270" font-size="12" fill="#7f8c8d">9 PM</text>
+                            
+                            <!-- Legend -->
+                            <rect x="20" y="20" width="15" height="15" fill="#e74c3c" opacity="0.3"/>
+                            <text x="40" y="32" font-size="12" fill="#2c3e50">Stress Level</text>
+                            
+                            <rect x="20" y="40" width="15" height="15" fill="#27ae60" opacity="0.3"/>
+                            <text x="40" y="52" font-size="12" fill="#2c3e50">Flow State</text>
+                            
+                            <line x1="20" y1="67" x2="35" y2="67" stroke="#c0392b" stroke-width="3" stroke-dasharray="3,3"/>
+                            <text x="40" y="72" font-size="12" fill="#2c3e50">Burnout Risk</text>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4>Code Complexity Heatmap</h4>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin: 20px 0;">
+                        <!-- Week 1 -->
+                        <div style="width: 30px; height: 30px; background: #27ae60; border-radius: 3px;" title="Low complexity"></div>
+                        <div style="width: 30px; height: 30px; background: #2ecc71; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #f39c12; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #27ae60; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #2ecc71; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #ecf0f1; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #ecf0f1; border-radius: 3px;"></div>
+                        
+                        <!-- Week 2 -->
+                        <div style="width: 30px; height: 30px; background: #f39c12; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #e74c3c; border-radius: 3px;" title="High complexity"></div>
+                        <div style="width: 30px; height: 30px; background: #e74c3c; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #f39c12; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #27ae60; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #ecf0f1; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #ecf0f1; border-radius: 3px;"></div>
+                        
+                        <!-- Week 3 -->
+                        <div style="width: 30px; height: 30px; background: #27ae60; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #2ecc71; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #2ecc71; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #27ae60; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #f39c12; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #ecf0f1; border-radius: 3px;"></div>
+                        <div style="width: 30px; height: 30px; background: #ecf0f1; border-radius: 3px;"></div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; font-size: 0.8em; color: #7f8c8d;">
+                        <span>Less</span>
+                        <div style="display: flex; gap: 3px;">
+                            <div style="width: 12px; height: 12px; background: #ecf0f1; border-radius: 2px;"></div>
+                            <div style="width: 12px; height: 12px; background: #27ae60; border-radius: 2px;"></div>
+                            <div style="width: 12px; height: 12px; background: #f39c12; border-radius: 2px;"></div>
+                            <div style="width: 12px; height: 12px; background: #e74c3c; border-radius: 2px;"></div>
+                        </div>
+                        <span>More</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>6. Key Interface Features</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Real-time Metrics</div>
+                <p>Live updates of wellness scores, stress levels, and productivity indicators with sub-second latency.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Personalized Insights</div>
+                <p>AI-powered recommendations tailored to individual coding patterns and psychological profiles.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">Cross-platform Access</div>
+                <p>Seamless experience across desktop IDE, web dashboard, and mobile app with synchronized data.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <div class="feature-title">Smart Notifications</div>
+                <p>Context-aware alerts that don't interrupt flow state but provide timely wellness reminders.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <div class="feature-title">Team Management</div>
+                <p>Manager dashboard with team wellness overview, risk alerts, and intervention recommendations.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Privacy Controls</div>
+                <p>Granular privacy settings with complete data anonymization and GDPR compliance.</p>
+            </div>
+        </div>
+        
+        <div style="background: #d1ecf1; border: 2px solid #17a2b8; padding: 25px; border-radius: 15px; margin: 30px 0;">
+            <h3 style="margin-top: 0; color: #0c5460;">🎨 Design Principles</h3>
+            <ul style="color: #0c5460;">
+                <li><strong>Minimal Cognitive Load:</strong> Clean, uncluttered interfaces that don't add to developer stress</li>
+                <li><strong>Actionable Insights:</strong> Every metric comes with clear, actionable recommendations</li>
+                <li><strong>Non-intrusive Integration:</strong> Seamlessly integrates into existing workflows without disruption</li>
+                <li><strong>Accessibility First:</strong> WCAG 2.1 AA compliant with support for screen readers and keyboard navigation</li>
+                <li><strong>Dark Mode Support:</strong> Optimized for both light and dark themes to reduce eye strain</li>
+                <li><strong>Responsive Design:</strong> Consistent experience across all device sizes and orientations</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

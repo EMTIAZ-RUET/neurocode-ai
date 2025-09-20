@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCode Deployment & Operations Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        .deployment-phase {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d1ecf1 100%);
+            border: 2px solid #17a2b8;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .phase-title {
+            color: #0c5460;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .deployment-step {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        
+        .monitoring-dashboard {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: white;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #e65100;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .ops-procedure {
+            background: #f3e5f5;
+            border: 2px solid #9c27b0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 NeuroCode Deployment & Operations Guide</h1>
+        
+        <div style="background: #d4edda; border: 2px solid #28a745; padding: 25px; border-radius: 15px; margin: 30px 0;">
+            <h3 style="margin-top: 0; color: #155724;">🎯 Deployment Overview</h3>
+            <p style="color: #155724;">This guide covers the complete deployment and operational procedures for NeuroCode, from initial setup to production monitoring and maintenance.</p>
+        </div>
+
+        <h2>1. Pre-Deployment Requirements</h2>
+        
+        <div class="deployment-phase">
+            <div class="phase-title">📋 System Requirements</div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Infrastructure Requirements</div>
+                <ul>
+                    <li><strong>CPU:</strong> Minimum 8 cores, Recommended 16+ cores</li>
+                    <li><strong>RAM:</strong> Minimum 16GB, Recommended 32GB+</li>
+                    <li><strong>Storage:</strong> 500GB SSD minimum, 2TB+ recommended</li>
+                    <li><strong>Network:</strong> 1Gbps connection, low latency</li>
+                    <li><strong>OS:</strong> Ubuntu 20.04 LTS or CentOS 8+</li>
+                </ul>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Software Dependencies</div>
+                <div class="code-block">
+# Core Dependencies
+Docker 20.10+
+Docker Compose 2.0+
+Kubernetes 1.21+ (for production)
+Node.js 18+
+Python 3.9+
+PostgreSQL 14+
+Redis 6.2+
+Nginx 1.20+</div>
+            </div>
+        </div>
+
+        <h2>2. Development Environment Setup</h2>
+        
+        <div class="deployment-phase">
+            <div class="phase-title">🛠️ Local Development</div>
+            
+            <div class="deployment-step">
+                <div class="step-title">1. Clone and Setup Repository</div>
+                <div class="code-block">
+# Clone the repository
+git clone https://github.com/neurocode/neurocode-platform.git
+cd neurocode-platform
+
+# Install dependencies
+npm install
+pip install -r requirements.txt
+
+# Setup environment variables
+cp .env.example .env
+# Edit .env with your configuration</div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">2. Database Setup</div>
+                <div class="code-block">
+# Start PostgreSQL and Redis
+docker-compose up -d postgres redis
+
+# Run database migrations
+npm run db:migrate
+
+# Seed initial data
+npm run db:seed</div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">3. Start Development Server</div>
+                <div class="code-block">
+# Start all services
+npm run dev
+
+# Or start individual services
+npm run dev:api      # API server on port 3000
+npm run dev:web      # Web app on port 3001
+npm run dev:ai       # AI service on port 3002</div>
+            </div>
+        </div>
+
+        <h2>3. Production Deployment</h2>
+        
+        <div class="deployment-phase">
+            <div class="phase-title">🏭 Production Setup</div>
+            
+            <div class="deployment-step">
+                <div class="step-title">1. Container Build & Registry</div>
+                <div class="code-block">
+# Build production images
+docker build -t neurocode/api:latest -f Dockerfile.api .
+docker build -t neurocode/web:latest -f Dockerfile.web .
+docker build -t neurocode/ai:latest -f Dockerfile.ai .
+
+# Push to registry
+docker push neurocode/api:latest
+docker push neurocode/web:latest
+docker push neurocode/ai:latest</div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">2. Kubernetes Deployment</div>
+                <div class="code-block">
+# Apply Kubernetes manifests
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/secrets.yaml
+kubectl apply -f k8s/postgres.yaml
+kubectl apply -f k8s/redis.yaml
+kubectl apply -f k8s/api.yaml
+kubectl apply -f k8s/web.yaml
+kubectl apply -f k8s/ai.yaml
+kubectl apply -f k8s/ingress.yaml
+
+# Verify deployment
+kubectl get pods -n neurocode
+kubectl get services -n neurocode</div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">3. SSL Certificate Setup</div>
+                <div class="code-block">
+# Install cert-manager
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.8.0/cert-manager.yaml
+
+# Apply SSL certificate
+kubectl apply -f k8s/certificate.yaml
+
+# Verify certificate
+kubectl describe certificate neurocode-tls -n neurocode</div>
+            </div>
+        </div>
+
+        <h2>4. Monitoring & Observability</h2>
+        
+        <div class="monitoring-dashboard">
+            <div style="color: #e65100; font-size: 1.4em; font-weight: bold; margin-bottom: 20px;">📊 Key Performance Metrics</div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-value">99.9%</div>
+                    <div class="metric-label">Uptime SLA</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value">&lt;200ms</div>
+                    <div class="metric-label">API Response Time</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value">&lt;2s</div>
+                    <div class="metric-label">Page Load Time</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value">10K+</div>
+                    <div class="metric-label">Concurrent Users</div>
+                </div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Monitoring Stack Setup</div>
+                <div class="code-block">
+# Deploy monitoring stack
+kubectl apply -f monitoring/prometheus.yaml
+kubectl apply -f monitoring/grafana.yaml
+kubectl apply -f monitoring/alertmanager.yaml
+
+# Setup log aggregation
+kubectl apply -f monitoring/elasticsearch.yaml
+kubectl apply -f monitoring/kibana.yaml
+kubectl apply -f monitoring/filebeat.yaml</div>
+            </div>
+        </div>
+
+        <h2>5. Backup & Recovery</h2>
+        
+        <div class="ops-procedure">
+            <div style="color: #6a1b9a; font-size: 1.4em; font-weight: bold; margin-bottom: 20px;">💾 Backup Procedures</div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Database Backup</div>
+                <div class="code-block">
+# Daily automated backup
+#!/bin/bash
+BACKUP_DIR="/backups/$(date +%Y-%m-%d)"
+mkdir -p $BACKUP_DIR
+
+# PostgreSQL backup
+pg_dump -h postgres-service -U neurocode neurocode_db > $BACKUP_DIR/database.sql
+
+# Redis backup
+redis-cli -h redis-service --rdb $BACKUP_DIR/redis.rdb
+
+# Upload to S3
+aws s3 sync $BACKUP_DIR s3://neurocode-backups/$(date +%Y-%m-%d)/</div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Disaster Recovery</div>
+                <ul>
+                    <li><strong>RTO (Recovery Time Objective):</strong> 4 hours</li>
+                    <li><strong>RPO (Recovery Point Objective):</strong> 1 hour</li>
+                    <li><strong>Multi-region deployment</strong> for high availability</li>
+                    <li><strong>Automated failover</strong> with health checks</li>
+                    <li><strong>Regular disaster recovery drills</strong> quarterly</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>6. Security Operations</h2>
+        
+        <div class="deployment-phase">
+            <div class="phase-title">🔒 Security Monitoring</div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Security Scanning</div>
+                <div class="code-block">
+# Container security scanning
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image neurocode/api:latest
+
+# Kubernetes security audit
+kubectl apply -f security/network-policies.yaml
+kubectl apply -f security/pod-security-policies.yaml
+
+# OWASP ZAP security testing
+docker run -t owasp/zap2docker-stable zap-baseline.py \
+  -t https://api.neurocode.com</div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Compliance Monitoring</div>
+                <ul>
+                    <li><strong>GDPR compliance</strong> - Data processing audits</li>
+                    <li><strong>SOC 2 Type II</strong> - Annual certification</li>
+                    <li><strong>HIPAA compliance</strong> - Healthcare data protection</li>
+                    <li><strong>ISO 27001</strong> - Information security management</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>7. Scaling & Performance</h2>
+        
+        <div class="deployment-phase">
+            <div class="phase-title">📈 Auto-scaling Configuration</div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Horizontal Pod Autoscaler</div>
+                <div class="code-block">
+# API service autoscaling
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: neurocode-api-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: neurocode-api
+  minReplicas: 3
+  maxReplicas: 50
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70</div>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Database Scaling</div>
+                <ul>
+                    <li><strong>Read replicas</strong> for query distribution</li>
+                    <li><strong>Connection pooling</strong> with PgBouncer</li>
+                    <li><strong>Query optimization</strong> and indexing</li>
+                    <li><strong>Caching layer</strong> with Redis</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>8. Maintenance Procedures</h2>
+        
+        <div class="ops-procedure">
+            <div style="color: #6a1b9a; font-size: 1.4em; font-weight: bold; margin-bottom: 20px;">🔧 Regular Maintenance</div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Weekly Maintenance Tasks</div>
+                <ul>
+                    <li>Review system performance metrics</li>
+                    <li>Check backup integrity</li>
+                    <li>Update security patches</li>
+                    <li>Review error logs and alerts</li>
+                    <li>Database maintenance and optimization</li>
+                </ul>
+            </div>
+            
+            <div class="deployment-step">
+                <div class="step-title">Monthly Maintenance Tasks</div>
+                <ul>
+                    <li>Security vulnerability assessment</li>
+                    <li>Capacity planning review</li>
+                    <li>Disaster recovery testing</li>
+                    <li>Performance optimization</li>
+                    <li>Documentation updates</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="background: #d1ecf1; border: 2px solid #17a2b8; padding: 25px; border-radius: 15px; margin: 30px 0;">
+            <h3 style="margin-top: 0; color: #0c5460;">✅ Deployment Checklist</h3>
+            <p style="color: #0c5460; margin-bottom: 0;">
+                <strong>Production-ready deployment with enterprise-grade reliability.</strong> 
+                This guide ensures NeuroCode is deployed with proper monitoring, security, and scalability measures for enterprise environments.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

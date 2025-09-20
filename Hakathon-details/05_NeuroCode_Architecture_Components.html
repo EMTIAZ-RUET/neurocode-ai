@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCode Architecture Components</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+            font-size: 1.4em;
+        }
+        
+        .architecture-diagram {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .component-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border: 2px solid #3498db;
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2);
+        }
+        
+        .component-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .component-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+        
+        .component-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .component-tech {
+            background: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-left: auto;
+        }
+        
+        .component-description {
+            color: #34495e;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .component-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .component-features li {
+            background: white;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+            font-size: 0.9em;
+        }
+        
+        .component-features li::before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .data-flow {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+        }
+        
+        .step-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-description {
+            flex: 1;
+        }
+        
+        .tech-stack-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tech-stack-table th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .tech-stack-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .tech-stack-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .tech-stack-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .scalability-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-box {
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .integration-flow {
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            border: 2px solid #27ae60;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .security-layer {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid #ff9800;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .deployment-pipeline {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border: 2px solid #9c27b0;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .connection-line {
+            stroke: #3498db;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+        
+        .component-box {
+            fill: #f8f9fa;
+            stroke: #3498db;
+            stroke-width: 2;
+            rx: 8;
+        }
+        
+        .component-text {
+            fill: #2c3e50;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12px;
+            text-anchor: middle;
+        }
+        
+        .layer-bg {
+            fill: rgba(52, 152, 219, 0.1);
+            stroke: #3498db;
+            stroke-width: 1;
+            stroke-dasharray: 5,5;
+            rx: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏗️ NeuroCode Architecture Components</h1>
+        
+        <h2>1. System Architecture Overview</h2>
+        
+        <div class="architecture-diagram">
+            <svg width="1400" height="800" viewBox="0 0 1400 800">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#3498db"/>
+                    </marker>
+                    <linearGradient id="layerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#3498db;stop-opacity:0.1" />
+                        <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:0.1" />
+                    </linearGradient>
+                </defs>
+                
+                <!-- Title -->
+                <text x="700" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#2c3e50">
+                    NeuroCode Complete System Architecture
+                </text>
+                
+                <!-- Client Layer -->
+                <rect class="layer-bg" x="50" y="60" width="1300" height="120" fill="url(#layerGrad)"/>
+                <text x="700" y="85" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">
+                    Client Layer
+                </text>
+                
+                <!-- Client Components -->
+                <rect class="component-box" x="80" y="100" width="120" height="60"/>
+                <text class="component-text" x="140" y="125">VS Code</text>
+                <text class="component-text" x="140" y="140">Extension</text>
+                
+                <rect class="component-box" x="220" y="100" width="120" height="60"/>
+                <text class="component-text" x="280" y="125">IntelliJ</text>
+                <text class="component-text" x="280" y="140">Plugin</text>
+                
+                <rect class="component-box" x="360" y="100" width="120" height="60"/>
+                <text class="component-text" x="420" y="125">Web</text>
+                <text class="component-text" x="420" y="140">Dashboard</text>
+                
+                <rect class="component-box" x="500" y="100" width="120" height="60"/>
+                <text class="component-text" x="560" y="125">Mobile</text>
+                <text class="component-text" x="560" y="140">App</text>
+                
+                <rect class="component-box" x="640" y="100" width="120" height="60"/>
+                <text class="component-text" x="700" y="125">Git</text>
+                <text class="component-text" x="700" y="140">Hooks</text>
+                
+                <rect class="component-box" x="780" y="100" width="120" height="60"/>
+                <text class="component-text" x="840" y="125">CI/CD</text>
+                <text class="component-text" x="840" y="140">Pipeline</text>
+                
+                <rect class="component-box" x="920" y="100" width="120" height="60"/>
+                <text class="component-text" x="980" y="125">Browser</text>
+                <text class="component-text" x="980" y="140">Extension</text>
+                
+                <rect class="component-box" x="1060" y="100" width="120" height="60"/>
+                <text class="component-text" x="1120" y="125">Slack/Jira</text>
+                <text class="component-text" x="1120" y="140">Integration</text>
+                
+                <rect class="component-box" x="1200" y="100" width="120" height="60"/>
+                <text class="component-text" x="1260" y="125">Terminal</text>
+                <text class="component-text" x="1260" y="140">Monitoring</text>
+                
+                <!-- API Gateway Layer -->
+                <rect class="layer-bg" x="50" y="200" width="1300" height="80"/>
+                <text x="700" y="225" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">
+                    API Gateway & Load Balancing
+                </text>
+                
+                <rect class="component-box" x="300" y="240" width="200" height="30"/>
+                <text class="component-text" x="400" y="260">Kong API Gateway</text>
+                
+                <rect class="component-box" x="520" y="240" width="200" height="30"/>
+                <text class="component-text" x="620" y="260">Rate Limiting & Auth</text>
+                
+                <rect class="component-box" x="740" y="240" width="200" height="30"/>
+                <text class="component-text" x="840" y="260">Load Balancer</text>
+                
+                <!-- Service Layer -->
+                <rect class="layer-bg" x="50" y="300" width="1300" height="200"/>
+                <text x="700" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">
+                    Microservices Layer
+                </text>
+                
+                <!-- Microservices -->
+                <rect class="component-box" x="80" y="340" width="140" height="70"/>
+                <text class="component-text" x="150" y="365">Code Ingestion</text>
+                <text class="component-text" x="150" y="380">Service</text>
+                <text class="component-text" x="150" y="395">Node.js</text>
+                
+                <rect class="component-box" x="240" y="340" width="140" height="70"/>
+                <text class="component-text" x="310" y="365">Metrics</text>
+                <text class="component-text" x="310" y="380">Extraction</text>
+                <text class="component-text" x="310" y="395">Python</text>
+                
+                <rect class="component-box" x="400" y="340" width="140" height="70"/>
+                <text class="component-text" x="470" y="365">Pattern Analysis</text>
+                <text class="component-text" x="470" y="380">Cerebras</text>
+                <text class="component-text" x="470" y="395">Python</text>
+                
+                <rect class="component-box" x="560" y="340" width="140" height="70"/>
+                <text class="component-text" x="630" y="365">NLP Service</text>
+                <text class="component-text" x="630" y="380">Llama 3.1</text>
+                <text class="component-text" x="630" y="395">Python</text>
+                
+                <rect class="component-box" x="720" y="340" width="140" height="70"/>
+                <text class="component-text" x="790" y="365">Prediction</text>
+                <text class="component-text" x="790" y="380">Engine</text>
+                <text class="component-text" x="790" y="395">Python</text>
+                
+                <rect class="component-box" x="880" y="340" width="140" height="70"/>
+                <text class="component-text" x="950" y="365">Notification</text>
+                <text class="component-text" x="950" y="380">Service</text>
+                <text class="component-text" x="950" y="395">Go</text>
+                
+                <rect class="component-box" x="1040" y="340" width="140" height="70"/>
+                <text class="component-text" x="1110" y="365">Analytics</text>
+                <text class="component-text" x="1110" y="380">Service</text>
+                <text class="component-text" x="1110" y="395">Python</text>
+                
+                <rect class="component-box" x="1200" y="340" width="140" height="70"/>
+                <text class="component-text" x="1270" y="365">Privacy</text>
+                <text class="component-text" x="1270" y="380">Service</text>
+                <text class="component-text" x="1270" y="395">Java</text>
+                
+                <!-- Message Queue -->
+                <rect class="layer-bg" x="50" y="520" width="1300" height="80"/>
+                <text x="700" y="545" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">
+                    Message Queue & Stream Processing
+                </text>
+                
+                <rect class="component-box" x="200" y="560" width="180" height="30"/>
+                <text class="component-text" x="290" y="580">Apache Kafka</text>
+                
+                <rect class="component-box" x="400" y="560" width="180" height="30"/>
+                <text class="component-text" x="490" y="580">Apache Flink</text>
+                
+                <rect class="component-box" x="600" y="560" width="180" height="30"/>
+                <text class="component-text" x="690" y="580">Redis Streams</text>
+                
+                <rect class="component-box" x="800" y="560" width="180" height="30"/>
+                <text class="component-text" x="890" y="580">Event Sourcing</text>
+                
+                <!-- Data Layer -->
+                <rect class="layer-bg" x="50" y="620" width="1300" height="120"/>
+                <text x="700" y="645" text-anchor="middle" font-size="16" font-weight="bold" fill="#2c3e50">
+                    Data Storage Layer
+                </text>
+                
+                <rect class="component-box" x="100" y="665" width="140" height="60"/>
+                <text class="component-text" x="170" y="685">PostgreSQL</text>
+                <text class="component-text" x="170" y="700">Main DB</text>
+                
+                <rect class="component-box" x="260" y="665" width="140" height="60"/>
+                <text class="component-text" x="330" y="685">TimescaleDB</text>
+                <text class="component-text" x="330" y="700">Time Series</text>
+                
+                <rect class="component-box" x="420" y="665" width="140" height="60"/>
+                <text class="component-text" x="490" y="685">Redis</text>
+                <text class="component-text" x="490" y="700">Cache</text>
+                
+                <rect class="component-box" x="580" y="665" width="140" height="60"/>
+                <text class="component-text" x="650" y="685">Pinecone</text>
+                <text class="component-text" x="650" y="700">Vector DB</text>
+                
+                <rect class="component-box" x="740" y="665" width="140" height="60"/>
+                <text class="component-text" x="810" y="685">Elasticsearch</text>
+                <text class="component-text" x="810" y="700">Search</text>
+                
+                <rect class="component-box" x="900" y="665" width="140" height="60"/>
+                <text class="component-text" x="970" y="685">S3/MinIO</text>
+                <text class="component-text" x="970" y="700">Object Store</text>
+                
+                <rect class="component-box" x="1060" y="665" width="140" height="60"/>
+                <text class="component-text" x="1130" y="685">InfluxDB</text>
+                <text class="component-text" x="1130" y="700">Metrics</text>
+                
+                <!-- Connection Lines -->
+                <line class="connection-line" x1="700" y1="180" x2="700" y2="200"/>
+                <line class="connection-line" x1="700" y1="280" x2="700" y2="300"/>
+                <line class="connection-line" x1="700" y1="500" x2="700" y2="520"/>
+                <line class="connection-line" x1="700" y1="600" x2="700" y2="620"/>
+                
+                <!-- Service connections -->
+                <line class="connection-line" x1="150" y1="410" x2="290" y2="560"/>
+                <line class="connection-line" x1="310" y1="410" x2="490" y2="560"/>
+                <line class="connection-line" x1="470" y1="410" x2="690" y2="560"/>
+                <line class="connection-line" x1="630" y1="410" x2="890" y2="560"/>
+                
+                <!-- Data connections -->
+                <line class="connection-line" x1="290" y1="590" x2="170" y2="665"/>
+                <line class="connection-line" x1="490" y1="590" x2="330" y2="665"/>
+                <line class="connection-line" x1="690" y1="590" x2="490" y2="665"/>
+                <line class="connection-line" x1="890" y1="590" x2="650" y2="665"/>
+            </svg>
+        </div>
+
+        <h2>2. Core Components Breakdown</h2>
+        
+        <div class="component-grid">
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">🔌</span>
+                    <div>
+                        <div class="component-title">IDE Plugins</div>
+                    </div>
+                    <span class="component-tech">TypeScript/Java</span>
+                </div>
+                <div class="component-description">
+                    Real-time code monitoring extensions for popular IDEs that capture developer behavior patterns without storing sensitive code content.
+                </div>
+                <ul class="component-features">
+                    <li>Keystroke dynamics analysis</li>
+                    <li>File switching pattern tracking</li>
+                    <li>Error correction monitoring</li>
+                    <li>Session duration tracking</li>
+                    <li>Break pattern detection</li>
+                    <li>Privacy-first data collection</li>
+                </ul>
+            </div>
+            
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">🚪</span>
+                    <div>
+                        <div class="component-title">API Gateway</div>
+                    </div>
+                    <span class="component-tech">Kong</span>
+                </div>
+                <div class="component-description">
+                    Centralized entry point for all client requests with authentication, rate limiting, and load balancing capabilities.
+                </div>
+                <ul class="component-features">
+                    <li>OAuth 2.0 authentication</li>
+                    <li>Rate limiting (1000 req/min)</li>
+                    <li>Request/response transformation</li>
+                    <li>API versioning support</li>
+                    <li>Circuit breaker pattern</li>
+                    <li>Comprehensive logging</li>
+                </ul>
+            </div>
+            
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">📊</span>
+                    <div>
+                        <div class="component-title">Code Ingestion Service</div>
+                    </div>
+                    <span class="component-tech">Node.js</span>
+                </div>
+                <div class="component-description">
+                    High-throughput service for receiving and processing real-time code events from multiple IDE plugins and development tools.
+                </div>
+                <ul class="component-features">
+                    <li>10K+ events per second capacity</li>
+                    <li>Event validation and sanitization</li>
+                    <li>Kafka producer integration</li>
+                    <li>Horizontal scaling support</li>
+                    <li>Health check endpoints</li>
+                    <li>Metrics collection</li>
+                </ul>
+            </div>
+            
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">🔍</span>
+                    <div>
+                        <div class="component-title">Metrics Extraction</div>
+                    </div>
+                    <span class="component-tech">Python</span>
+                </div>
+                <div class="component-description">
+                    Advanced code analysis engine that computes complexity metrics, quality scores, and behavioral indicators from code changes.
+                </div>
+                <ul class="component-features">
+                    <li>Cyclomatic complexity calculation</li>
+                    <li>Cognitive complexity analysis</li>
+                    <li>Technical debt assessment</li>
+                    <li>Code duplication detection</li>
+                    <li>Multi-language support</li>
+                    <li>Real-time processing</li>
+                </ul>
+            </div>
+            
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">🧠</span>
+                    <div>
+                        <div class="component-title">Cerebras AI Engine</div>
+                    </div>
+                    <span class="component-tech">Python API</span>
+                </div>
+                <div class="component-description">
+                    Ultra-fast pattern recognition system using Cerebras CS-2 for real-time behavioral analysis and anomaly detection.
+                </div>
+                <ul class="component-features">
+                    <li>850K AI cores processing</li>
+                    <li>Sub-millisecond inference</li>
+                    <li>Pattern recognition algorithms</li>
+                    <li>Anomaly detection models</li>
+                    <li>Time series analysis</li>
+                    <li>Predictive modeling</li>
+                </ul>
+            </div>
+            
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">💬</span>
+                    <div>
+                        <div class="component-title">Llama NLP Service</div>
+                    </div>
+                    <span class="component-tech">Python</span>
+                </div>
+                <div class="component-description">
+                    Natural language processing service using Meta's Llama 3.1 for analyzing commit messages, comments, and documentation.
+                </div>
+                <ul class="component-features">
+                    <li>405B parameter model</li>
+                    <li>Sentiment analysis</li>
+                    <li>Intent classification</li>
+                    <li>Code quality assessment</li>
+                    <li>128K token context window</li>
+                    <li>Multi-language support</li>
+                </ul>
+            </div>
+            
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">🔮</span>
+                    <div>
+                        <div class="component-title">Prediction Engine</div>
+                    </div>
+                    <span class="component-tech">Python</span>
+                </div>
+                <div class="component-description">
+                    Machine learning pipeline for predicting burnout risk, stress levels, and optimal intervention timing using ensemble models.
+                </div>
+                <ul class="component-features">
+                    <li>Ensemble ML models</li>
+                    <li>Burnout risk prediction</li>
+                    <li>Stress level forecasting</li>
+                    <li>Productivity optimization</li>
+                    <li>Intervention timing</li>
+                    <li>Model drift detection</li>
+                </ul>
+            </div>
+            
+            <div class="component-card">
+                <div class="component-header">
+                    <span class="component-icon">🔔</span>
+                    <div>
+                        <div class="component-title">Notification Service</div>
+                    </div>
+                    <span class="component-tech">Go</span>
+                </div>
+                <div class="component-description">
+                    Real-time notification system for delivering personalized wellness alerts and intervention recommendations across multiple channels.
+                </div>
+                <ul class="component-features">
+                    <li>Multi-channel delivery</li>
+                    <li>Context-aware timing</li>
+                    <li>Personalized messaging</li>
+                    <li>Delivery confirmation</li>
+                    <li>A/B testing support</li>
+                    <li>Rate limiting per user</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>3. Data Flow Architecture</h2>
+        
+        <div class="data-flow">
+            <h3 style="color: #3498db; margin-top: 0;">Real-time Data Processing Pipeline</h3>
+            
+            <div class="flow-step">
+                <div class="step-number">1</div>
+                <div class="step-description">
+                    <strong>Data Collection:</strong> IDE plugins capture coding events (keystrokes, file changes, errors) and send to Code Ingestion Service via HTTPS
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">2</div>
+                <div class="step-description">
+                    <strong>Event Processing:</strong> Code Ingestion Service validates, sanitizes, and publishes events to Kafka topics with partitioning by user_id
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">3</div>
+                <div class="step-description">
+                    <strong>Stream Processing:</strong> Apache Flink consumes Kafka streams, performs windowed aggregations, and triggers downstream services
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">4</div>
+                <div class="step-description">
+                    <strong>Parallel Analysis:</strong> Metrics Extraction, Cerebras AI, and Llama NLP services process events simultaneously for different insights
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">5</div>
+                <div class="step-description">
+                    <strong>Feature Fusion:</strong> Prediction Engine combines outputs from all analysis services to generate comprehensive psychological insights
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">6</div>
+                <div class="step-description">
+                    <strong>Storage & Caching:</strong> Results stored in TimescaleDB for historical analysis and Redis for real-time dashboard updates
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">7</div>
+                <div class="step-description">
+                    <strong>Intervention Logic:</strong> Notification Service evaluates thresholds and triggers personalized recommendations via multiple channels
+                </div>
+            </div>
+        </div>
+
+        <h2>4. Technology Stack Details</h2>
+        
+        <table class="tech-stack-table">
+            <thead>
+                <tr>
+                    <th>Layer</th>
+                    <th>Component</th>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                    <th>Scalability</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="4">Frontend</td>
+                    <td>Web Dashboard</td>
+                    <td>React 18 + TypeScript</td>
+                    <td>Developer wellness dashboard</td>
+                    <td>CDN + Edge caching</td>
+                </tr>
+                <tr>
+                    <td>Mobile App</td>
+                    <td>React Native</td>
+                    <td>Cross-platform mobile access</td>
+                    <td>App store distribution</td>
+                </tr>
+                <tr>
+                    <td>VS Code Extension</td>
+                    <td>TypeScript + VS Code API</td>
+                    <td>Real-time IDE monitoring</td>
+                    <td>Marketplace distribution</td>
+                </tr>
+                <tr>
+                    <td>IntelliJ Plugin</td>
+                    <td>Java/Kotlin + Platform SDK</td>
+                    <td>JetBrains IDE integration</td>
+                    <td>Plugin repository</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">Gateway</td>
+                    <td>API Gateway</td>
+                    <td>Kong + Lua plugins</td>
+                    <td>Request routing & auth</td>
+                    <td>Horizontal scaling</td>
+                </tr>
+                <tr>
+                    <td>Load Balancer</td>
+                    <td>NGINX + Istio</td>
+                    <td>Traffic distribution</td>
+                    <td>Auto-scaling groups</td>
+                </tr>
+                <tr>
+                    <td rowspan="8">Services</td>
+                    <td>Code Ingestion</td>
+                    <td>Node.js + Express</td>
+                    <td>High-throughput event intake</td>
+                    <td>3-10 replicas</td>
+                </tr>
+                <tr>
+                    <td>Metrics Extraction</td>
+                    <td>Python + FastAPI</td>
+                    <td>Code complexity analysis</td>
+                    <td>5-15 replicas</td>
+                </tr>
+                <tr>
+                    <td>Pattern Analysis</td>
+                    <td>Python + Cerebras API</td>
+                    <td>AI-powered pattern recognition</td>
+                    <td>GPU scaling</td>
+                </tr>
+                <tr>
+                    <td>NLP Service</td>
+                    <td>Python + Transformers</td>
+                    <td>Natural language processing</td>
+                    <td>2-8 replicas</td>
+                </tr>
+                <tr>
+                    <td>Prediction Engine</td>
+                    <td>Python + Scikit-learn</td>
+                    <td>ML model inference</td>
+                    <td>3-12 replicas</td>
+                </tr>
+                <tr>
+                    <td>Notification Service</td>
+                    <td>Go + Gin framework</td>
+                    <td>Real-time alerts</td>
+                    <td>2-6 replicas</td>
+                </tr>
+                <tr>
+                    <td>Analytics Service</td>
+                    <td>Python + Django</td>
+                    <td>Dashboard & reporting</td>
+                    <td>2-8 replicas</td>
+                </tr>
+                <tr>
+                    <td>Privacy Service</td>
+                    <td>Java + Spring Boot</td>
+                    <td>Data anonymization</td>
+                    <td>2-4 replicas</td>
+                </tr>
+                <tr>
+                    <td rowspan="3">Messaging</td>
+                    <td>Message Queue</td>
+                    <td>Apache Kafka</td>
+                    <td>Event streaming</td>
+                    <td>Partition scaling</td>
+                </tr>
+                <tr>
+                    <td>Stream Processing</td>
+                    <td>Apache Flink</td>
+                    <td>Real-time analytics</td>
+                    <td>Task parallelism</td>
+                </tr>
+                <tr>
+                    <td>Event Sourcing</td>
+                    <td>Redis Streams</td>
+                    <td>Event replay capability</td>
+                    <td>Cluster mode</td>
+                </tr>
+                <tr>
+                    <td rowspan="7">Storage</td>
+                    <td>Main Database</td>
+                    <td>PostgreSQL 15</td>
+                    <td>Relational data storage</td>
+                    <td>Read replicas</td>
+                </tr>
+                <tr>
+                    <td>Time Series DB</td>
+                    <td>TimescaleDB</td>
+                    <td>Metrics & analytics</td>
+                    <td>Hypertable partitioning</td>
+                </tr>
+                <tr>
+                    <td>Cache Layer</td>
+                    <td>Redis Cluster</td>
+                    <td>Session & data caching</td>
+                    <td>Cluster scaling</td>
+                </tr>
+                <tr>
+                    <td>Vector Database</td>
+                    <td>Pinecone</td>
+                    <td>ML embeddings storage</td>
+                    <td>Managed scaling</td>
+                </tr>
+                <tr>
+                    <td>Search Engine</td>
+                    <td>Elasticsearch</td>
+                    <td>Full-text search</td>
+                    <td>Shard distribution</td>
+                </tr>
+                <tr>
+                    <td>Object Storage</td>
+                    <td>S3/MinIO</td>
+                    <td>File & backup storage</td>
+                    <td>Unlimited capacity</td>
+                </tr>
+                <tr>
+                    <td>Metrics Store</td>
+                    <td>InfluxDB</td>
+                    <td>System metrics</td>
+                    <td>Retention policies</td>
+                </tr>
+                <tr>
+                    <td rowspan="4">Infrastructure</td>
+                    <td>Container Platform</td>
+                    <td>Kubernetes</td>
+                    <td>Container orchestration</td>
+                    <td>Node auto-scaling</td>
+                </tr>
+                <tr>
+                    <td>Service Mesh</td>
+                    <td>Istio</td>
+                    <td>Service communication</td>
+                    <td>Sidecar scaling</td>
+                </tr>
+                <tr>
+                    <td>Monitoring</td>
+                    <td>Prometheus + Grafana</td>
+                    <td>System observability</td>
+                    <td>Federation</td>
+                </tr>
+                <tr>
+                    <td>CI/CD</td>
+                    <td>GitHub Actions</td>
+                    <td>Automated deployment</td>
+                    <td>Parallel workflows</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>5. Scalability & Performance Metrics</h2>
+        
+        <div class="scalability-metrics">
+            <div class="metric-box">
+                <div class="metric-value">10K+</div>
+                <div class="metric-label">Events per Second</div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-value">&lt;50ms</div>
+                <div class="metric-label">API Response Time</div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-value">99.9%</div>
+                <div class="metric-label">System Uptime</div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-value">100K+</div>
+                <div class="metric-label">Concurrent Users</div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-value">1TB+</div>
+                <div class="metric-label">Daily Data Processing</div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-value">5 sec</div>
+                <div class="metric-label">End-to-End Latency</div>
+            </div>
+        </div>
+
+        <h2>6. Integration Patterns</h2>
+        
+        <div class="integration-flow">
+            <h3 style="color: #0c5460; margin-top: 0;">🔗 External System Integration</h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
+                    <h4 style="margin-top: 0; color: #0c5460;">Git Integration</h4>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>Pre-commit hooks</li>
+                        <li>Post-commit analysis</li>
+                        <li>Branch pattern tracking</li>
+                        <li>Merge conflict detection</li>
+                    </ul>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
+                    <h4 style="margin-top: 0; color: #0c5460;">CI/CD Integration</h4>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>Build pipeline monitoring</li>
+                        <li>Test failure correlation</li>
+                        <li>Deployment stress tracking</li>
+                        <li>Release cycle analysis</li>
+                    </ul>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
+                    <h4 style="margin-top: 0; color: #0c5460;">Communication Tools</h4>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>Slack notifications</li>
+                        <li>Jira ticket correlation</li>
+                        <li>Teams integration</li>
+                        <li>Email summaries</li>
+                    </ul>
+                </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
+                    <h4 style="margin-top: 0; color: #0c5460;">Calendar Systems</h4>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <li>Meeting impact analysis</li>
+                        <li>Focus time blocking</li>
+                        <li>Break scheduling</li>
+                        <li>Workload planning</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>7. Security Architecture</h2>
+        
+        <div class="security-layer">
+            <h3 style="color: #e65100; margin-top: 0;">🔒 Multi-Layer Security Model</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <h4 style="color: #e65100;">Authentication & Authorization</h4>
+                    <ul>
+                        <li><strong>OAuth 2.0:</strong> Industry-standard authentication</li>
+                        <li><strong>JWT Tokens:</strong> Stateless session management</li>
+                        <li><strong>RBAC:</strong> Role-based access control</li>
+                        <li><strong>API Keys:</strong> Service-to-service authentication</li>
+                        <li><strong>MFA:</strong> Multi-factor authentication support</li>
+                    </ul>
+                    
+                    <h4 style="color: #e65100;">Data Protection</h4>
+                    <ul>
+                        <li><strong>AES-256:</strong> Data encryption at rest</li>
+                        <li><strong>TLS 1.3:</strong> Data encryption in transit</li>
+                        <li><strong>Key Vault:</strong> Centralized key management</li>
+                        <li><strong>Tokenization:</strong> Sensitive data replacement</li>
+                        <li><strong>Anonymization:</strong> PII removal</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="color: #e65100;">Network Security</h4>
+                    <ul>
+                        <li><strong>VPC Isolation:</strong> Network segmentation</li>
+                        <li><strong>Private Subnets:</strong> Internal service protection</li>
+                        <li><strong>WAF:</strong> Web application firewall</li>
+                        <li><strong>DDoS Protection:</strong> Attack mitigation</li>
+                        <li><strong>Rate Limiting:</strong> Abuse prevention</li>
+                    </ul>
+                    
+                    <h4 style="color: #e65100;">Compliance</h4>
+                    <ul>
+                        <li><strong>GDPR:</strong> European data protection</li>
+                        <li><strong>CCPA:</strong> California privacy compliance</li>
+                        <li><strong>SOC 2:</strong> Security controls audit</li>
+                        <li><strong>ISO 27001:</strong> Information security standard</li>
+                        <li><strong>HIPAA:</strong> Healthcare data protection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>8. Deployment Pipeline</h2>
+        
+        <div class="deployment-pipeline">
+            <h3 style="color: #6a1b9a; margin-top: 0;">🚀 CI/CD Pipeline Architecture</h3>
+            
+            <div class="data-flow" style="background: rgba(156, 39, 176, 0.1); color: #2c3e50;">
+                <div class="flow-step">
+                    <div class="step-number" style="background: #9c27b0;">1</div>
+                    <div class="step-description">
+                        <strong>Source Control:</strong> Git push triggers GitHub Actions workflow with automated testing and security scanning
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number" style="background: #9c27b0;">2</div>
+                    <div class="step-description">
+                        <strong>Build & Test:</strong> Docker images built, unit tests run, integration tests executed, security vulnerabilities scanned
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number" style="background: #9c27b0;">3</div>
+                    <div class="step-description">
+                        <strong>Staging Deployment:</strong> Images deployed to staging environment, end-to-end tests run, performance benchmarks executed
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number" style="background: #9c27b0;">4</div>
+                    <div class="step-description">
+                        <strong>Production Deployment:</strong> Blue-green deployment to production, health checks verified, rollback capability maintained
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number" style="background: #9c27b0;">5</div>
+                    <div class="step-description">
+                        <strong>Monitoring:</strong> Application metrics collected, alerts configured, performance dashboards updated
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #d1ecf1; border: 2px solid #17a2b8; padding: 25px; border-radius: 15px; margin: 30px 0;">
+            <h3 style="margin-top: 0; color: #0c5460;">🎯 Architecture Benefits</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <h4 style="color: #0c5460;">Scalability</h4>
+                    <ul style="color: #0c5460;">
+                        <li>Horizontal scaling for all services</li>
+                        <li>Auto-scaling based on demand</li>
+                        <li>Load balancing across instances</li>
+                        <li>Database read replicas</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #0c5460;">Reliability</h4>
+                    <ul style="color: #0c5460;">
+                        <li>99.9% uptime SLA</li>
+                        <li>Circuit breaker patterns</li>
+                        <li>Graceful degradation</li>
+                        <li>Automated failover</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #0c5460;">Performance</h4>
+                    <ul style="color: #0c5460;">
+                        <li>Sub-50ms API responses</li>
+                        <li>Real-time data processing</li>
+                        <li>Efficient caching strategies</li>
+                        <li>Optimized database queries</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #0c5460;">Security</h4>
+                    <ul style="color: #0c5460;">
+                        <li>Zero-trust architecture</li>
+                        <li>End-to-end encryption</li>
+                        <li>Privacy by design</li>
+                        <li>Compliance ready</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
